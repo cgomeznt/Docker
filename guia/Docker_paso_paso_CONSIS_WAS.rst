@@ -744,33 +744,8 @@ Contenido del archivo “startWAS.sh”::
 	echo " " 
 	echo "El WAS ya esta iniciado en background"
 	echo "Para ver los logs, busque en esta ruta:"
-	echo "/u01/scm/logs/"
+	echo "/scm/logs/"
 
-	Contenido del archivo “oraInst.loc”::
-
-		inventory_loc=/u01/app/oraInventory
-		inst_group=oracle
-
-
-	Contenido del archivo “wls.rsp”::
-
-		inventory_loc=/u01/app/oraInventory
-		inst_group=oracle
-		[root@srvdocker01 consis]# cat wls.rsp 
-		[ENGINE]
-		Response File Version=1.0.0.0.0
-		[GENERIC]
-		ORACLE_HOME=/u01/app/oracle/middleware
-		INSTALL_TYPE=WebLogic Server
-		MYORACLESUPPORT_USERNAME=
-		MYORACLESUPPORT_PASSWORD=<SECURE VALUE>
-		DECLINE_SECURITY_UPDATES=true
-		SECURITY_UPDATES_VIA_MYORACLESUPPORT=false
-		PROXY_HOST=
-		PROXY_PORT=
-		PROXY_USER=
-		PROXY_PWD=<SECURE VALUE>
-		COLLECTOR_SUPPORTHUB_URL=
 
 Contenido del archivo “stopWAS.sh”::
 

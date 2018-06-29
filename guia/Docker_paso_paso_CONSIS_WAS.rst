@@ -871,7 +871,7 @@ Contenido del archivo “startWAS.sh”::
 		PROXY_PWD=<SECURE VALUE>
 		COLLECTOR_SUPPORTHUB_URL=
 
-Contenido del archivo “stopWAS.sh”
+Contenido del archivo “stopWAS.sh”::
 
 	#!/bin/bash
 

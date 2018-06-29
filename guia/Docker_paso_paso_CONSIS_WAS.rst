@@ -36,10 +36,7 @@ IMPORTANTE: Docker EE se requiere tener un contrato de Soporte.
 Tabla comparativa 
 +++++++++++++++++
 
-.. figure:: ../images/01.png
- 
-.. figure:: ../images/02.png
-
+.. figure:: ../images/05.png
 
 Plataformas Soportadas para Docker CE
 ++++++++++++++++++++++++++++++++++++++++
@@ -60,8 +57,6 @@ Docker EE está disponible en múltiples plataformas, en la nube y en las instal
 .. figure:: ../images/04.png
 
  
- 
-
 Links oficiales de como instalar Docker CE y Docker EE
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

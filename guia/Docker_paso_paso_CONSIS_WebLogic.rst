@@ -36,122 +36,25 @@ IMPORTANTE: Docker EE se requiere tener un contrato de Soporte.
 Tabla comparativa 
 +++++++++++++++++
 
-Capabilities
-Community Edition
-Enterprise Edition Basic
-Enterprise Edition Standard
-Enterprise Edition Advanced
-Container engine and built in orchestration, networking, security
-
-
-
-
-Certified infrastructure, plugins and ISV containers
- 
-
-
-
-Image management
- 
- 
-
-
-Container app management
- 
- 
-
-
-Image security scanning
- 
- 
- 
-
-
+.. figure:: ../images/05.png
 
 Plataformas Soportadas para Docker CE
 ++++++++++++++++++++++++++++++++++++++++
 
 Docker CE está disponible en múltiples plataformas, en la nube y en las instalaciones. Use las siguientes tablas para elegir la mejor ruta de instalación para usted.
-Desktop
-Platform x86_64
-Docker for Mac (macOS) Docker for Windows (Microsoft Windows 10)
 
-
-
-Cloud
-Platform
-Docker Community Edition
-Amazon Web Services
-
-Microsoft Azure
-
-
-
-Server
-Platform
-x86_64 / amd64
-ARM
-ARM64 / AARCH64
-IBM Power (ppc64le)
-IBM Z (s390x)
-CentOS
-
+.. figure:: ../images/01.png
  
+.. figure:: ../images/02.png
 
- 
- 
-Debian
-
-
-
- 
- 
-Fedora
-
- 
- 
- 
- 
-Ubuntu
-
-
-
-
-
-
-
-Nosotros utilizaremos CentOS de x86_64 / amd64
+.. figure:: ../images/03.png
 
 Plataformas Soportadas para Docker EE
 ++++++++++++++++++++++++++++++++++++++
 
 Docker EE está disponible en múltiples plataformas, en la nube y en las instalaciones. Use las siguientes tablas para elegir la mejor ruta de instalación para usted.
 
-Platform
-x86_64 / amd64
-IBM Power (ppc64le)
-IBM Z (s390x)
-CentOS
-
- 
- 
-Oracle Linux
-
- 
- 
-Red Hat Enterprise Linux
-
-
-
-SUSE Linux Enterprise Server
-
-
-
-Ubuntu
-
-
-
-Microsoft Windows Server 2016
+.. figure:: ../images/04.png
 
  
  

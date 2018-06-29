@@ -7,7 +7,7 @@
 * [Pasos Actualizar Ambiente](guia/Pasos_Actualizar_Ambiente.rst)
 * [Docker paso a paso para CONSIS con WebLogic](guia/Docker_paso_paso_CONSIS_WebLogic.rst)
 * [Docker paso a paso para CONSIS con WAS](guia/Docker_paso_paso_CONSIS_WAS.rst)
-* [build run exec](guia/build-run-exec.rst)
+* [Un buen build run exec para CONSIS](guia/build-run-exec.rst)
 
 
 

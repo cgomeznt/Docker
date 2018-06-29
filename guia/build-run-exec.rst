@@ -1,4 +1,7 @@
-::
+Un buen build run exec para CONSIS
++++++++++++++++++++++++++++++++++++
+
+Para WebLogic 12.2.1.3.0::
 
 	docker build -t "weblogic:12.2.1.3.0" --build-arg PORT=7021 .
 
@@ -11,7 +14,7 @@
 
 	docker exec -i -t CRECER-7054 /bin/bash
 
-::
+Para WebLogic 12.1.3.0.0::
 
 	docker build -t "weblogic:12.1.3.0.0" --build-arg PORT=7021 .
 

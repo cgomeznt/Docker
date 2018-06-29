@@ -194,6 +194,7 @@ Tener configurado de forma correcta el archivo hostname y hosts
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 ::
+
 	# vi /etc/hostname
 	srvdocker01.localdomain
 
@@ -280,6 +281,7 @@ Para desinstalar versiones obsoletas de Docker
 ++++++++++++++++++++++++++++++++++++++++++++++
 
 Las versiones anteriores de Docker se llamaban docker o docker-engine. Si están instalados, desinstálelos, junto con las dependencias asociadas.::
+
 	$ sudo yum remove docker \
 		          docker-client \
 		          docker-client-latest \
@@ -560,34 +562,60 @@ Instrucciones de Dockerfile
 ++++++++++++++++++++++++++++
 
 Introducción al uso de las instrucciones más usadas que podemos definir dentro de un fichero Dockerfile, para una descripción más detallada consulta la documentación oficial. https://docs.docker.com/engine/reference/builder/#format
-**FROM:** indica la imagen base que va a utilizar para seguir futuras instrucciones. Buscará si la imagen se encuentra localmente, en caso de que no, la descargará de internet.
+**FROM:** indica la imagen base que va a utilizar para seguir futuras instrucciones. Buscará si la imagen se encuentra localmente, en caso de que no, la descargará de internet.::
+
 	FROM centos:7
-**MAINTAINER:** Nos permite configurar datos del autor, principalmente su nombre y su dirección de correo electrónico.
+
+**MAINTAINER:** Nos permite configurar datos del autor, principalmente su nombre y su dirección de correo electrónico.::
+
 	MAINTAINER Carlos Gomez G cgomeznt@gmail.com
-**ENV:** Configura las variables de entorno.
+
+**ENV:** Configura las variables de entorno.::
+
 	ENV	export MW_HOME=/u01/app/oracle/middleware
-**ADD:** Esta instrucción se encarga de copiar los ficheros y directorios desde una ubicación especificada y los agrega al sistema de ficheros del contenedor. Si se trata de añadir un fichero comprimido, al ejecutarse el guión lo descomprimirá de manera automática.
+
+**ADD:** Esta instrucción se encarga de copiar los ficheros y directorios desde una ubicación especificada y los agrega al sistema de ficheros del contenedor. Si se trata de añadir un fichero comprimido, al ejecutarse el guión lo descomprimirá de manera automática.::
+
 	ADD Generate-Schematool.tar /u01/software
-**COPY:** Es la expresión recomendada para copiar ficheros, similar a ADD.
+
+**COPY:** Es la expresión recomendada para copiar ficheros, similar a ADD.::
+
 	COPY	jdk-7u79-linux-x64.rpm	/u01/software
-**RUN:** Esta instrucción ejecuta cualquier comando en una capa nueva encima de una imagen y hace un commit de los resultados. Esa nueva imagen intermedia es usada para el siguiente paso en el Dockerfile. RUN tiene 2 formatos:
-El modo shell: /bin/sh -c
-	RUN comando
-Modo ejecución:
-	RUN ["ejecutable", "parámetro1", "parámetro2"]
-El modo ejecución nos permite correr comandos en imágenes bases que no cuenten con /bin/sh , nos permite además hacer uso de otra shell si así lo deseamos, ejemplo:
+
+**RUN:** Esta instrucción ejecuta cualquier comando en una capa nueva encima de una imagen y hace un commit de los resultados. Esa nueva imagen intermedia es usada para el siguiente paso en el Dockerfile. RUN tiene 2 formatos::
+
+	El modo shell: /bin/sh -c
+		RUN comando
+::
+
+	Modo ejecución:
+		RUN ["ejecutable", "parámetro1", "parámetro2"]
+
+El modo ejecución nos permite correr comandos en imágenes bases que no cuenten con /bin/sh , nos permite además hacer uso de otra shell si así lo deseamos, ejemplo::
+
 	RUN ["/bin/bash", "-c", "echo prueba"]
-**EXPOSE:** Indica los puertos en los que va a escuchar el contenedor. Hay que tener en cuenta que esta opción no consigue que los puertos sean accesibles desde el host; para esto debemos utilizar la exposición de puertos mediante la opción -p de docker run.
+
+**EXPOSE:** Indica los puertos en los que va a escuchar el contenedor. Hay que tener en cuenta que esta opción no consigue que los puertos sean accesibles desde el host; para esto debemos utilizar la exposición de puertos mediante la opción -p de docker run.::
+
 	EXPOSE 80 443
-**VOLUME:** Nos permite utilizar en el contenedor una ubicación de nuestro host, y así, poder almacenar datos de manera permanente. Los volúmenes de los contenedores siempre son accesibles en el host anfitrión, en la ubicación: /var/lib/docker/volumes/
+
+**VOLUME:** Nos permite utilizar en el contenedor una ubicación de nuestro host, y así, poder almacenar datos de manera permanente. Los volúmenes de los contenedores siempre son accesibles en el host anfitrión, en la ubicación: /var/lib/docker/volumes/::
+
 	VOLUME "/opt/tomcat/webapps"
-**WORKDIR:** El directorio por defecto donde ejecutaremos las acciones.
+
+**WORKDIR:** El directorio por defecto donde ejecutaremos las acciones.::
+
 	WORKDIR /opt/tomcat
-**USER:** Por defecto, todas las acciones son realizadas por el usuario root. Aquí podemos indicar un usuario diferente.
+
+**USER:** Por defecto, todas las acciones son realizadas por el usuario root. Aquí podemos indicar un usuario diferente.::
+
 	USER	oracle
+
 **SHELL:** En los contenedores, el punto de entrada es el comando /bins/sh -c para ejecutar los comandos específicos en CMD, o los comandos especificados en línea de comandos para la acción run.
-**ARG:** Podemos añadir parámetros a nuestro Dockerfile para distintos propósitos.
+**ARG:** Podemos añadir parámetros a nuestro Dockerfile para distintos propósitos.::
+
 	ARG PORT=7021
+
 **CMD y ENTRYPOINT:** Estas dos instrucciones son muy parecidas, aunque se utilizan en situaciones diferentes, y además pueden ser usadas conjuntamente, en el siguiente artículo se explica muy bien su uso.
 Estas dos instrucciones nos permiten especificar el comando que se va a ejecutar por defecto, sino indicamos ninguno cuando ejecutamos el docker run. Normalmente las imágenes bases (debian, ubuntu,…) están configuradas con estas instrucciones para ejecutar el comando /bin/sh o /bin/bash. Podemos comprobar el comando por defecto que se ha definido en una imagen con el siguiente comando::
 
@@ -603,21 +631,24 @@ Por lo tanto no es necesario indicar el comando como argumento, cuando se inicia
 	$ docker run -i -t  debian
 
 
-CMD tiene tres formatos:
-Formato de ejecución:
-	CMD ["ejecutable", "parámetro1", "parámetro2"]
-Modo shell:
-	CMD comando parámetro1 parámetro2
-Formato para usar junto a la instrucción ENTRYPOINT
-	CMD ["parámetro1","parámetro2"]
+CMD tiene tres formatos::
+	Formato de ejecución:
+		CMD ["ejecutable", "parámetro1", "parámetro2"]
+	Modo shell:
+		CMD comando parámetro1 parámetro2
+	Formato para usar junto a la instrucción ENTRYPOINT
+		CMD ["parámetro1","parámetro2"]
+
 Solo puede existir una instrucción CMD en un Dockerfile, si colocamos más de una, solo la última tendrá efecto.Se debe usar para indicar el comando por defecto que se va a ejecutar al crear el contenedor, pero permitimos que el usuario ejecute otro comando al iniciar el contenedor.
-ENTRYPOINT tiene dos formatos:
-Formato de ejecución:
-	ENTRYPOINT ["ejecutable", "parámetro1", "parámetro2"]
-Modo shell:
-	ENTRYPOINT comando parámetro1 parámetro2
+ENTRYPOINT tiene dos formatos::
+
+	Formato de ejecución:
+		ENTRYPOINT ["ejecutable", "parámetro1", "parámetro2"]
+	Modo shell:
+		ENTRYPOINT comando parámetro1 parámetro2
+
 Esta instrucción también nos permite indicar el comando que se va ejecutar al iniciar el contenedor, pero en este caso el usuario no puede indicar otro comando al iniciar el contenedor. Si usamos esta instrucción no permitimos o no  esperamos que el usuario ejecute otro comando que el especificado. Se puede usar junto a una instrucción CMD, donde se indicará los parámetro por defecto que tendrá el comando indicado en el ENTRYPOINT. Cualquier argumento que pasemos en la línea de comandos mediante docker run serán anexados después de todos los elementos especificados mediante la instrucción ENTRYPOINT, y anulará cualquier elemento especificado con CMD.
-Ejemplo:
+Ejemplo
 Si tenemos un fichero Dockerfile, que tiene las siguientes instrucciones::
 
 	ENTRYPOINT [“http”, “-v ]”
@@ -1040,8 +1071,9 @@ Borrar un Contenedores
 
 	[oracle@srvdocker01 consis]$ docker stop WebLogic && docker rm WebLogic
 
-Borrar una Imagen::
+Borrar una Imagen
 ++++++++++++++++++++
+::
 
 	[oracle@srvdocker01 consis]$ docker rmi fd40a4b4601f
 

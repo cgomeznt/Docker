@@ -504,6 +504,7 @@ Instrucciones de Dockerfile
 ++++++++++++++++++++++++++++
 
 Introducción al uso de las instrucciones más usadas que podemos definir dentro de un fichero Dockerfile, para una descripción más detallada consulta la documentación oficial. https://docs.docker.com/engine/reference/builder/#format
+
 **FROM:** indica la imagen base que va a utilizar para seguir futuras instrucciones. Buscará si la imagen se encuentra localmente, en caso de que no, la descargará de internet.::
 
 	FROM centos:7

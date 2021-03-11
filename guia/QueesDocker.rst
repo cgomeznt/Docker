@@ -431,9 +431,13 @@ Como crear las Imagenes
 ++++++++++++++++++++++++++++++++++++++
 
 Las imágenes las podemos crear desde :
-Repositorios oficiales
-Desde un archivo llamado Dockerfile (CONSIS utilizara esta opción)
-Desde un Container
+
+Repositorios oficiales.
+
+Desde un archivo llamado Dockerfile.
+
+Desde un Container.
+
 Utilizaremos la opción de “crear imágenes desde Dockerfile” porque nos permite hacer paso a paso todas las  configuraciones, lo cual nos permite tener el control total de una imagen Docker.
 
 Que es una imagen

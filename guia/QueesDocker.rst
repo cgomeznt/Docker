@@ -412,6 +412,13 @@ Cuando iniciamos docker toda la estructura es creada por defecto en  “/var/lib
 	# Cambiar a:
 	ExecStart=/usr/bin/dockerd -g /scm/docker
 
+Información del Docker instalado
+++++++++++++++++++++++++++++++++
+
+Consultar la info de docker::
+
+	$ docker info
+
 Primeros pasos con Docker
 +++++++++++++++++++++++++
 

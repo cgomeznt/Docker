@@ -666,7 +666,7 @@ Así quedaría el archivo Dockerfile y lo copiamos en en directorio consis::
 		find \
 		net-tools \
 		zip \
-		httpd.x86_64
+		httpd.x86_64 \
 		unzip
 
 	# Limpiamos los temporales de yum
@@ -743,7 +743,11 @@ Creado la imagen con build
 +++++++++++++++++++++++++++
 ::
 
-	[oracle@nodo1 consis]$ docker build -t "Imagen-Demostracion" --build-arg PORT=7021 .
+	[oracle@nodo1 consis]$ docker build -t "imagen-demostracion:1.0" --build-arg PORT=7021 .
+
+El siguiente comando, si solo si, es en un Virtual Box y es para que tenga la salida de red por el host::
+
+	[oracle@nodo1 consis]$ docker build -t "imagen-demostracion:1.0" --build-arg PORT=7021 --network host .
 
 Hacer un listado de las imagenes
 +++++++++++++++++++++++++++++++++
@@ -755,20 +759,19 @@ Crear el contenedor desde la imagen e iniciarlo
 ++++++++++++++++++++++++++++++++++++++++++++++++
 ::
 
-	docker run -dti --name "Contenedor-Demostracion"  \
+	docker run -dti --name "contenedor-demostracion"  \
 	--mount type=bind,source=/scm/external,target=/scm/external \
-	--mount type=bind,source=/scm/EAR_Weblogic,target=/scm/EAR \
-	--mount type=bind,source=/home/qatest,target=/home/qatest \
+	--mount type=bind,source=/scm/EAR,target=/scm/EAR \
 	-p 7054:7021 \
-	"Imagen-Demostracion:1.0"
+	"imagen-demostracion:1.0"
 
 ó::
 
-	[oracle@nodo1 consis]$ docker run -dti --name "Contenedor-Demostracion:1.0"  --mount type=bind,source=/home/qatest,target=/home/qatest -p 7054:7021 "Imagen-Demostracion"
+	[oracle@nodo1 consis]$ docker run -dti --name "contenedor-demostracion"  --mount type=bind,source=/home/qatest,target=/home/qatest -p 7054:7021 "imagen-demostracion:1.0"
 
 ó::
 
-	[oracle@srvdocker01 consis]$ docker run -dti --name "Contenedor-Demostracion:1.0"  -p 7054:7021 "Imagen-Demostracion"
+	[oracle@srvdocker01 consis]$ docker run -dti --name "contenedor-demostracion"  -p 7054:7021 "imagen-demostracion:1.0"
 
 Consultar los contenedores que están iniciados.
 +++++++++++++++++++++++++++++++++++++++++++++++
@@ -780,7 +783,7 @@ Ingresar al Contenedor en modo bash
 +++++++++++++++++++++++++++++++++++
 ::
 
-	[oracle@nodo1 consis]$ docker exec -i -t Contenedor-Demostracion /bin/bash
+	[oracle@nodo1 consis]$ docker exec -i -t contenedor-demostracion /bin/bash
 	[oracle@ecde063fb19c /]$ 
 
 Verificamos colocando en un navegador la URL administrativa del Weblogic.
@@ -794,7 +797,7 @@ Detener el Contenedores
 ++++++++++++++++++++++++	
 ::
 
-	[oracle@nodo1 consis]$ docker stop Contenedor-Demostracion
+	[oracle@nodo1 consis]$ docker stop contenedor-demostracion
 
 Listar los Contenedores que no estan iniciados
 ++++++++++++++++++++++++++++++++++++++++++++++++
@@ -806,19 +809,19 @@ Iniciar el Contenedores
 +++++++++++++++++++++++++++
 ::
 
-	[oracle@nodo1 consis]$ docker start Contenedor-Demostracion
+	[oracle@nodo1 consis]$ docker start contenedor-demostracion
 
 Inspeccionar las configuraciones del Contenedores
 +++++++++++++++++++++++++++++++++++++++++++++++++
 ::
 
-	[root@nodo1 consis]$  docker container inspect Contenedor-Demostracion
+	[root@nodo1 consis]$  docker container inspect contenedor-demostracion
 
 Borrar un Contenedores
 ++++++++++++++++++++++
 ::
 
-	[oracle@nodo1 consis]$ docker stop Contenedor-Demostracion && docker rm Contenedor-Demostracion
+	[oracle@nodo1 consis]$ docker stop contenedor-demostracion && docker rm contenedor-demostracion
 
 Borrar una Imagen
 ++++++++++++++++++++

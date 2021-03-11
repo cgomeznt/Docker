@@ -451,10 +451,15 @@ Que es un contenedor
 
 Un contenedor es una instancia en tiempo de ejecución de una imagen de Docker.
 Un contenedor Docker consiste en:
+
 Una imagen Docker
+
 Un entorno de ejecución
+
 Un conjunto estándar de instrucciones
+
 El concepto se toma prestado de Contenedores de envío, que definen un estándar para enviar productos a nivel mundial. Docker define un estándar para enviar software.
+
 ***Una instancia de una imagen se llama contenedor. Tienes una imagen, que es un conjunto de capas como describes. Si inicializa una imagen, tiene un contenedor en ejecución de esta imagen. Puede tener muchos contenedores en ejecución de la misma imagen.***
 
 Que es Dockerfile

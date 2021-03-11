@@ -555,6 +555,7 @@ El modo ejecución nos permite correr comandos en imágenes bases que no cuenten
 	USER	oracle
 
 **SHELL:** En los contenedores, el punto de entrada es el comando /bins/sh -c para ejecutar los comandos específicos en CMD, o los comandos especificados en línea de comandos para la acción run.
+
 **ARG:** Podemos añadir parámetros a nuestro Dockerfile para distintos propósitos.::
 
 	ARG PORT=7021
@@ -601,3 +602,236 @@ Si tenemos un fichero Dockerfile, que tiene las siguientes instrucciones::
 Podemos crear un contenedor a partir de la imagen generada:
 docker run centos:centos7: Se creará el contenedor con el servidor web escuchando en el puerto 80.
 docker run centos:centros7 -p 8080: Se creará el contenedor con el servidor web escuchando en el puerto 8080.
+
+Hacer una imagen de Docker CE con Dockerfile
+++++++++++++++++++++++++++++++++++++++++++++
+
+Vamos a crear una imagen con la ayuda del archivo Dockerfile, dentro de él vamos a colocar todas las lineas de instrucciones necesarias para que se descargue una imagen base, luego dentro de ella vamos a copiar algun archivo y/o instaladores que necesitemos para hacer este laboratorio y por ultimo con el comando build procedemos a crear la imagen.
+
+Crear un directorio de trabajo
+++++++++++++++++++++++++++++++
+::
+
+	$ mkdir consis
+	$ cd consis/
+	[oracle@nodo1 consis]$
+
+Crear el archivo Dockerfile
++++++++++++++++++++++++++++
+
+Vamos a crear un Dockerfile que haga lo siguiente.:
+
+Crear una base de la imagen.
+
+Actualizar la base de la imagen.
+
+Crear el usuario y grupo.
+
+Crear los directorios para demostración.
+
+Crear las variables para demostración.
+
+Crear variable de entorno para demostración.
+
+Copiar los archivos base y de configuración dentro de la imagen.
+
+Asignar los permisos a los directorios creados.
+
+Instalar la versión de JAVA.
+
+Cambiarse con el usuario creado realizar la instalación.
+
+Crear un volumen que permite modificar, eliminar o agregar archivos y/o directorios luego que el CONTENEDOR este en uso.
+
+Exponer el puerto por donde una aplicación escuchara las peticiones. para demostración.
+
+Así quedaría el archivo Dockerfile y lo copiamos en en directorio consis::
+
+	$ vi Dockerfile
+	# Utilizando CentOS 7 para la base de la imagen
+	FROM centos:7
+
+	MAINTAINER Carlos Gomez G cgomeznt@gmail.com
+
+	# Declaramos las siguientes variables por recomendaciones d Docker
+	ENV     container docker
+
+	# Instalamos paquetes necesarios para la base que nos permitan administrar y hacer troubleshooting
+	RUN     yum -y update
+	RUN     yum -y install sudo \
+		tar \
+		gzip \
+		openssh-clients \
+		vi \
+		find \
+		net-tools \
+		zip \
+		httpd.x86_64
+		unzip
+
+	# Limpiamos los temporales de yum
+	RUN	yum clean all
+
+	# Creamos el usuario y grupo valido para inicializar el Weblogic
+	RUN     groupadd oinstall
+	RUN     useradd -g oinstall oracle
+
+	# Creamos los directorios requeridos para copiar los archivos base, configuraciones y otras segun sea la necesidad. Tambien le otorgamos los permisos.
+	RUN	mkdir -p /u01/software && \
+		mkdir -p /scm/EAR && \
+		mkdir -p /scm/external && \
+		mkdir -p /scm/scripts && \
+		mkdir -p /scm/logs && \
+		mkdir -p /u01/app/oracle/middleware && \
+		mkdir -p /u01/app/oracle/config/domains && \
+		mkdir -p /u01/app/oracle/config/applications 
+
+	# Creamos las variables para demostración
+	ENV	export MW_HOME=/u01/app/oracle/middleware
+	ENV	export WLS_HOME=$MW_HOME/wlserver
+	ENV	export WL_HOME=$WLS_HOME
+
+	# Creamos la variable del JAVA_HOME y lo colocamos en el PATH
+	ENV	export JAVA_HOME=/u01/app/oracle/jdk1.8.0_77
+	ENV	export PATH=$JAVA_HOME/bin:$PATH
+
+	# Copiamos la version del JAVA y lo instalamos
+	COPY	jdk-8u101-linux-x64.rpm	/u01/software
+	RUN	rpm -ivh /u01/software/jdk-8u101-linux-x64.rpm
+
+	# Copiamos los archivos base y de configuracion dentro de la imagen.
+	COPY	startMyAPP.sh /scm/scripts
+	COPY	stopMyAPP.sh /scm/scripts
+	RUN	chown -R oracle:oinstall /u01 && \
+		chown -R oracle:oinstall /scm && \
+		chmod -R 775 /u01/ && \
+		chmod -R 775 /scm/
+
+	# Limpiamos todos los archivo que ya no son requeridos para la imagen.
+	RUN	rm -rf /u01/software/*
+
+	# Creamos este volumen que nos permite modificar, eliminar o agregar archivos y/o directorios luego que el CONTENEDOR este en uso.
+	VOLUME	"/scm"
+
+	# Cuando el CONTENEDOR este operativo, el host expondra este puerto.
+	ARG	PORT=7021
+	EXPOSE	$PORT
+
+	#Lanzar la ejecución de una aplicacion.
+	#CMD ["/u01/app/oracle/middleware/user_projects/domains/D7021/bin/startWebLogic.sh"]
+	CMD ["/scm/scripts/startMyAPP.sh"]
+
+Copiar los instaladores necesarios y los archivos de configuración que serán utilizados desde el archivo Dockerfile, en nuestra carpeta de trabajo::
+
+	[oracle@nodo1 consis]$ ls
+	jdk-8u101-linux-x64.rpm  startMyAPP.sh  stopMyAPP.sh
+
+Paso a paso de la creación de la imagen y del contenedor.
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Ya que tenemos cuales archivos vamos a utilizar vamos a continuar con un paso a paso técnico.
+
+Nos aseguramos que estamos en el directorio de trabajo y que están todos los archivos requeridos.
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+::
+
+	[oracle@nodo1 consis]$ pwd
+	[oracle@nodo1 consis]$ ls
+		Dockerfile  jdk-8u101-linux-x64.rpm  startMyAPP.sh  stopMyAPP.sh
+
+Creado la imagen con build
++++++++++++++++++++++++++++
+::
+
+	[oracle@nodo1 consis]$ docker build -t "Imagen-Demostracion" --build-arg PORT=7021 .
+
+Hacer un listado de las imagenes
++++++++++++++++++++++++++++++++++
+::
+
+	[oracle@nodo1 consis]$ docker images
+
+Crear el contenedor desde la imagen e iniciarlo
+++++++++++++++++++++++++++++++++++++++++++++++++
+::
+
+	docker run -dti --name "Contenedor-Demostracion"  \
+	--mount type=bind,source=/scm/external,target=/scm/external \
+	--mount type=bind,source=/scm/EAR_Weblogic,target=/scm/EAR \
+	--mount type=bind,source=/home/qatest,target=/home/qatest \
+	-p 7054:7021 \
+	"Imagen-Demostracion:1.0"
+
+ó::
+
+	[oracle@nodo1 consis]$ docker run -dti --name "Contenedor-Demostracion:1.0"  --mount type=bind,source=/home/qatest,target=/home/qatest -p 7054:7021 "Imagen-Demostracion"
+
+ó::
+
+	[oracle@srvdocker01 consis]$ docker run -dti --name "Contenedor-Demostracion:1.0"  -p 7054:7021 "Imagen-Demostracion"
+
+Consultar los contenedores que están iniciados.
++++++++++++++++++++++++++++++++++++++++++++++++
+::
+
+	[oracle@nodo1 consis]$ docker ps
+
+Ingresar al Contenedor en modo bash
++++++++++++++++++++++++++++++++++++
+::
+
+	[oracle@nodo1 consis]$ docker exec -i -t Contenedor-Demostracion /bin/bash
+	[oracle@ecde063fb19c /]$ 
+
+Verificamos colocando en un navegador la URL administrativa del Weblogic.
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Listo podemos abrir un navegador y verificar que ya el Apache este operativo
+http://nodo1
+
+
+Detener el Contenedores
+++++++++++++++++++++++++	
+::
+
+	[oracle@nodo1 consis]$ docker stop Contenedor-Demostracion
+
+Listar los Contenedores que no estan iniciados
+++++++++++++++++++++++++++++++++++++++++++++++++
+::
+
+	[oracle@nodo1 ~]$ docker ps -f "status=exited"
+
+Iniciar el Contenedores
++++++++++++++++++++++++++++
+::
+
+	[oracle@nodo1 consis]$ docker start Contenedor-Demostracion
+
+Inspeccionar las configuraciones del Contenedores
++++++++++++++++++++++++++++++++++++++++++++++++++
+::
+
+	[root@nodo1 consis]$  docker container inspect Contenedor-Demostracion
+
+Borrar un Contenedores
+++++++++++++++++++++++
+::
+
+	[oracle@nodo1 consis]$ docker stop Contenedor-Demostracion && docker rm Contenedor-Demostracion
+
+Borrar una Imagen
+++++++++++++++++++++
+::
+
+	[oracle@nodo1 consis]$ docker rmi fd40a4b4601f
+
+
+Borrar Volumen huérfanos
++++++++++++++++++++++++++
+::
+
+	[oracle@nodo1 consis]$ docker volume rm $(docker volume ls -qf dangling=true)
+
+
+

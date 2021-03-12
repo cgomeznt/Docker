@@ -739,11 +739,11 @@ Creado la imagen con build
 +++++++++++++++++++++++++++
 ::
 
-	[oracle@nodo1 laboratorio]$ docker build -t "imagen-demostracion:1.0" --build-arg PORT=7021 .
+	[oracle@nodo1 laboratorio]$ docker build -t "imagen-demostracion:1.0" --build-arg PORT=80 .
 
 El siguiente comando, si solo si, es en un Virtual Box y es para que tenga la salida de red por el host::
 
-	[oracle@nodo1 laboratorio]$ docker build -t "imagen-demostracion:1.0" --build-arg PORT=7021 --network host .
+	[oracle@nodo1 laboratorio]$ docker build -t "imagen-demostracion:1.0" --build-arg PORT=80 --network host .
 
 Hacer un listado de las imagenes
 +++++++++++++++++++++++++++++++++
@@ -755,7 +755,7 @@ Crear el contenedor desde la imagen e iniciarlo
 ++++++++++++++++++++++++++++++++++++++++++++++++
 ::
 
-	docker run -dti --name "contenedor-demostracion"  \
+	$ docker run -dti --name "contenedor-demostracion"  \
 	--mount type=bind,source=/scm/external,target=/scm/external \
 	--mount type=bind,source=/scm/EAR,target=/scm/EAR \
 	-p 80:8080 \
@@ -765,11 +765,11 @@ Estos argumentos "--privileged "imagen-demostracion:1.0" /usr/sbin/init" es para
 
 ó::
 
-	[oracle@nodo1 laboratorio]$ docker run -dti --name "contenedor-demostracion"  --mount type=bind,source=/home/qatest,target=/home/qatest -p 7054:7021 "imagen-demostracion:1.0"
+	$ docker run -dti --name "contenedor-demostracion"  --mount type=bind,source=/home/qatest,target=/home/qatest -p 8080:80 "imagen-demostracion:1.0"
 
 ó::
 
-	[oracle@srvdocker01 laboratorio]$ docker run -dti --name "contenedor-demostracion"  -p 7054:7021 "imagen-demostracion:1.0"
+	$ docker run -dti --name "contenedor-demostracion"  -p 8080:80 "imagen-demostracion:1.0"
 
 Ahora bien si estas en un Virtual box, agregale el --network host, claro el parametro -p queda deshabilitado. Tomara el que este expuesto en la imagen::
 
@@ -784,64 +784,64 @@ Consultar los contenedores que están iniciados.
 +++++++++++++++++++++++++++++++++++++++++++++++
 ::
 
-	[oracle@nodo1 laboratorio]$ docker ps
+	$ docker ps
 
 Ingresar al Contenedor en modo bash
 +++++++++++++++++++++++++++++++++++
 ::
 
-	[oracle@nodo1 laboratorio]$ docker exec -i -t contenedor-demostracion /bin/bash
+	$ docker exec -i -t contenedor-demostracion /bin/bash
 	[oracle@ecde063fb19c /]$ 
 
 Verificamos colocando en un navegador la URL administrativa del Weblogic.
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Listo podemos abrir un navegador y verificar que ya el Apache este operativo
-http://nodo1
+http://nodo1:8080
 
 
 Detener el Contenedores
 ++++++++++++++++++++++++	
 ::
 
-	[oracle@nodo1 laboratorio]$ docker stop contenedor-demostracion
+	$ docker stop contenedor-demostracion
 
 Listar los Contenedores que no estan iniciados
 ++++++++++++++++++++++++++++++++++++++++++++++++
 ::
 
-	[oracle@nodo1 ~]$ docker ps -f "status=exited"
+	$ docker ps -f "status=exited"
 
 Iniciar el Contenedores
 +++++++++++++++++++++++++++
 ::
 
-	[oracle@nodo1 laboratorio]$ docker start contenedor-demostracion
+	$ docker start contenedor-demostracion
 
 Inspeccionar las configuraciones del Contenedores
 +++++++++++++++++++++++++++++++++++++++++++++++++
 ::
 
-	[root@nodo1 laboratorio]$  docker container inspect contenedor-demostracion
+	$  docker container inspect contenedor-demostracion
 
 Borrar un Contenedores
 ++++++++++++++++++++++
 ::
 
-	[oracle@nodo1 laboratorio]$ docker stop contenedor-demostracion && docker rm contenedor-demostracion
+	$ docker stop contenedor-demostracion && docker rm contenedor-demostracion
 
 Borrar una Imagen
 ++++++++++++++++++++
 ::
 
-	[oracle@nodo1 laboratorio]$ docker rmi fd40a4b4601f
+	$ docker rmi fd40a4b4601f
 
 
 Borrar Volumen huérfanos
 +++++++++++++++++++++++++
 ::
 
-	[oracle@nodo1 laboratorio]$ docker volume rm $(docker volume ls -qf dangling=true)
+	$ docker volume rm $(docker volume ls -qf dangling=true)
 
 
 

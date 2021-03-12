@@ -718,8 +718,8 @@ Así quedaría el archivo Dockerfile y lo copiamos en en directorio consis::
 	EXPOSE	$PORT
 
 	#Lanzar la ejecución de una aplicacion.
-	#CMD ["/u01/app/oracle/middleware/user_projects/domains/D7021/bin/startWebLogic.sh"]
-	CMD ["/scm/scripts/startMyAPP.sh"]
+	#CMD	["/u01/app/oracle/middleware/user_projects/domains/D7021/bin/startWebLogic.sh"]
+	RUN	/scm/scripts/startMyAPP.sh
 
 Copiar los instaladores necesarios y los archivos de configuración que serán utilizados desde el archivo Dockerfile, en nuestra carpeta de trabajo::
 

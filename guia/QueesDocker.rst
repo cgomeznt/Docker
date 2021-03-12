@@ -714,7 +714,7 @@ Así quedaría el archivo Dockerfile y lo copiamos en en directorio consis::
 	VOLUME	"/scm"
 
 	# Cuando el CONTENEDOR este operativo, el host expondra este puerto.
-	ARG	PORT=7021
+	ARG	PORT=80
 	EXPOSE	$PORT
 
 	#Lanzar la ejecución de una aplicacion.
@@ -762,8 +762,10 @@ Crear el contenedor desde la imagen e iniciarlo
 	docker run -dti --name "contenedor-demostracion"  \
 	--mount type=bind,source=/scm/external,target=/scm/external \
 	--mount type=bind,source=/scm/EAR,target=/scm/EAR \
-	-p 7054:7021 \
-	"imagen-demostracion:1.0"
+	-p 80:8080 \
+	--privileged "imagen-demostracion:1.0" /usr/sbin/init
+
+Estos argumentos "--privileged "imagen-demostracion:1.0" /usr/sbin/init" es para que funcione el systemctl 
 
 ó::
 
@@ -772,6 +774,15 @@ Crear el contenedor desde la imagen e iniciarlo
 ó::
 
 	[oracle@srvdocker01 consis]$ docker run -dti --name "contenedor-demostracion"  -p 7054:7021 "imagen-demostracion:1.0"
+
+Ahora bien si estas en un Virtual box, agregale el --network host, claro el parametro -p queda deshabilitado. Tomara el que este expuesto en el contenedor::
+
+	docker run -dti --name "contenedor-demostracion"  \
+	--mount type=bind,source=/scm/external,target=/scm/external \
+	--mount type=bind,source=/scm/EAR,target=/scm/EAR \
+	--network host \
+	--privileged "imagen-demostracion:1.0" /usr/sbin/init
+
 
 Consultar los contenedores que están iniciados.
 +++++++++++++++++++++++++++++++++++++++++++++++

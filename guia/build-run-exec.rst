@@ -25,4 +25,4 @@ Para WebLogic 12.1.3.0.0::
 	-p 7050:7021 \
 	"weblogic:12.1.3.0.0"
 
-	docker exec -i -t weblogic:12.1.3.0.0 /bin/bash
+	docker exec -i -t CRECER-7054 /bin/bash

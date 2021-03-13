@@ -817,7 +817,7 @@ $ sudo vi /var/www/html/index.html
 		<title>www.Docker-Demostracion.com</title>
 	  </head>
 	  <body>
-		<h1>Felicitaciones, esta es una pagina dentro de un Docker-Demostracion</h1>
+		<h1>Felicitaciones, esta es un Apache dentro de un Contenedor Docker Demostracion</h1>
 	  </body>
 	</html>
 

@@ -637,9 +637,13 @@ Copiar los archivos base y de configuración dentro de la imagen.
 
 Asignar los permisos a los directorios creados.
 
+Instalar el Apache.
+
 Instalar la versión de JAVA.
 
 Cambiarse con el usuario creado realizar la instalación.
+
+Iniciar el servicio de Apache con systemctl. Utilizar systemctl tiene unos tips
 
 Crear un volumen que permite modificar, eliminar o agregar archivos y/o directorios luego que el CONTENEDOR este en uso.
 
@@ -749,13 +753,14 @@ Hacer un listado de las imagenes
 +++++++++++++++++++++++++++++++++
 ::
 
-	[oracle@nodo1 laboratorio]$ docker images
+	$ docker images
 
 Crear el contenedor desde la imagen e iniciarlo
 ++++++++++++++++++++++++++++++++++++++++++++++++
 ::
 
 	$ docker run -dti --name "contenedor-demostracion"  \
+	-v /var/www/html:/var/www/html \
 	--mount type=bind,source=/scm/external,target=/scm/external \
 	--mount type=bind,source=/scm/EAR,target=/scm/EAR \
 	-p 80:8080 \
@@ -773,7 +778,8 @@ Estos argumentos "--privileged "imagen-demostracion:1.0" /usr/sbin/init" es para
 
 Ahora bien si estas en un Virtual box, agregale el --network host, claro el parametro -p queda deshabilitado. Tomara el que este expuesto en la imagen::
 
-	docker run -dti --name "contenedor-demostracion"  \
+	$ docker run -dti --name "contenedor-demostracion"  \
+	-v /var/www/html:/var/www/html \
 	--mount type=bind,source=/scm/external,target=/scm/external \
 	--mount type=bind,source=/scm/EAR,target=/scm/EAR \
 	--network host \
@@ -799,6 +805,29 @@ Verificamos colocando en un navegador la URL administrativa del Weblogic.
 Listo podemos abrir un navegador y verificar que ya el Apache este operativo
 http://nodo1:8080
 
+Y si es en un virtual Box, recuerda que es el puerto por donde lo expones, en este caso sera el 80
+http://nodo1
+
+Ahora vamos a crear un archivo index para terminar con el laboratorio en el volumen persistente::
+
+$ sudo vi /var/www/html/index.html
+
+	<html>
+	  <head>
+		<title>www.Docker-Demostracion.com</title>
+	  </head>
+	  <body>
+		<h1>Felicitaciones, esta es una pagina dentro de un Docker-Demostracion</h1>
+	  </body>
+	</html>
+
+Volvemos a consultar
+http://nodo1:8080
+
+Y si es en un virtual Box, recuerda que es el puerto por donde lo expones, en este caso sera el 80
+http://nodo1
+
+Listo ahora algunos comando de utilidad.
 
 Detener el Contenedores
 ++++++++++++++++++++++++	

@@ -763,18 +763,18 @@ Crear el contenedor desde la imagen e iniciarlo
 	-v /var/www/html:/var/www/html \
 	--mount type=bind,source=/scm/external,target=/scm/external \
 	--mount type=bind,source=/scm/EAR,target=/scm/EAR \
-	-p 80:8080 \
+	-p 1234:80 \
 	--privileged "imagen-demostracion:1.0" /usr/sbin/init
 
 Estos argumentos "--privileged "imagen-demostracion:1.0" /usr/sbin/init" es para que funcione el systemctl 
 
 ó::
 
-	$ docker run -dti --name "contenedor-demostracion"  --mount type=bind,source=/home/qatest,target=/home/qatest -p 8080:80 "imagen-demostracion:1.0"
+	$ docker run -dti --name "contenedor-demostracion"  --mount type=bind,source=/home/qatest,target=/home/qatest -p 1234:80 "imagen-demostracion:1.0"
 
 ó::
 
-	$ docker run -dti --name "contenedor-demostracion"  -p 8080:80 "imagen-demostracion:1.0"
+	$ docker run -dti --name "contenedor-demostracion"  -p 1234:80 "imagen-demostracion:1.0"
 
 Ahora bien si estas en un Virtual box, agregale el --network host, claro el parametro -p queda deshabilitado. Tomara el que este expuesto en la imagen::
 
@@ -803,14 +803,14 @@ Verificamos colocando en un navegador la URL administrativa del Weblogic.
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Listo podemos abrir un navegador y verificar que ya el Apache este operativo
-http://nodo1:8080
+http://nodo1:1234
 
 Y si es en un virtual Box, recuerda que es el puerto por donde lo expones, en este caso sera el 80
 http://nodo1
 
 Ahora vamos a crear un archivo index para terminar con el laboratorio en el volumen persistente::
 
-$ sudo vi /var/www/html/index.html
+	$ sudo vi /var/www/html/index.html
 
 	<html>
 	  <head>

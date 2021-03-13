@@ -1,6 +1,8 @@
 ## Docker
 
 * [¿Qué es Docker? - Primeros Pasos](guia/QueesDocker.rst)
+* [Instalar Docker](guia/instalarDocker.rst)
+* [Dokerizar Apache paso a paso](guia/dockerizarapache.rst)
 * [Step-step con Dockerfile](guia/Step_step_con_Dockerfile.rst)
 * [Step-step con Dockerfile para Weblogic](guia/Step_step_con_Dockerfile_para_Weblogic.rst)
 * [Export and Import a Docker Image Between Nodes](guia/Export_and_Import_a_Docker_Image_Between_Nodes.rst)

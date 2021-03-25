@@ -851,6 +851,12 @@ http://nodo1
 
 Listo ahora algunos comando de utilidad.
 
+Buscar una imagen
+++++++++++++++++++++
+::
+
+	$ docker search centos
+
 Detener el Contenedores
 ++++++++++++++++++++++++	
 ::

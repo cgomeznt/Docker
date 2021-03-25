@@ -412,6 +412,12 @@ Cuando iniciamos docker toda la estructura es creada por defecto en  “/var/lib
 	# Cambiar a:
 	ExecStart=/usr/bin/dockerd -g /scm/docker
 
+Dememos recargar el systemctl::
+
+	systemctl daemon-reload
+
+Recuerda luego copiar el contenido de “/var/lib/docker” hacia la nueva ruta y ahora si podras iniciar el Docker en su nueva ruta.
+
 Información del Docker instalado
 ++++++++++++++++++++++++++++++++
 

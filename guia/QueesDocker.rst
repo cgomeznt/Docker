@@ -895,6 +895,7 @@ Borrar Volumen huérfanos
 	$ docker volume rm $(docker volume ls -qf dangling=true)
 
 Remover todos
+++++++++++++++
   - all stopped containers
   - all networks not used by at least one container
   - all images without at least one container associated to them

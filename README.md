@@ -2,6 +2,7 @@
 
 * [¿Qué es Docker? - Primeros Pasos](guia/QueesDocker.rst)
 * [Instalar Docker](guia/instalarDocker.rst)
+* [Cambiar la ruata de Docker](guia/rutaDocker.rst)
 * [Dokerizar Apache paso a paso](guia/dockerizarapache.rst)
 * [Step-step con Dockerfile](guia/Step_step_con_Dockerfile.rst)
 * [Step-step con Dockerfile para Weblogic](guia/Step_step_con_Dockerfile_para_Weblogic.rst)

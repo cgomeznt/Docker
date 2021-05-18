@@ -1,11 +1,16 @@
 Cambiar la ruta raiz de Docker CE
 ===================================
 
-Cuando iniciamos docker toda la estructura es creada por defecto en  “/var/lib/docker”, pero la podemos cambiar, debemos crear el siguiente archivo daemon.json en el directorio /etc/docker.
+Cuando iniciamos docker toda la estructura es creada por defecto en  “/var/lib/docker”, pero la podemos cambiar, 
+
+
+Consultamos docker info tendremos la ruta actual::
+
+	$ sudo docker info | grep Root
 
 Detenemos el servicio de docker::
 
-	$ sudo ystemctl stop docker
+	$ sudo systemctl stop docker
 
 Si estamos en initd debemos crear el daemon.json::
 
@@ -16,7 +21,7 @@ Si estamos en initd debemos crear el daemon.json::
 
 Si estamos en systemd debemos modificar el docker.service.::
 
-	$ vi /lib/systemd/system/docker.service
+	$ sudo vi /lib/systemd/system/docker.service
 		# Buscar esta linea
 		ExecStart=/usr/bin/dockerd 
 		# Cambiar a:
@@ -34,7 +39,7 @@ Dememos recargar el systemctl::
 
 Ahora ejecutamos docker info tendremos la evidencia contundente::
 
-	docker info | grep Root
+	sudo docker info | grep Root
 
 
 Información del Docker instalado
@@ -42,4 +47,4 @@ Información del Docker instalado
 
 Consultar la info de docker::
 
-	$ docker info
+	$ sudo docker info

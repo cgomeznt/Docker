@@ -4,6 +4,7 @@
 * [Instalar Docker](guia/instalarDocker.rst)
 * [Cambiar la ruta de Docker](guia/rutaDocker.rst)
 * [Dokerizar Apache paso a paso](guia/dockerizarapache.rst)
+* [Dokerizar Gitlab paso a paso](guia/dockerizargitlab.rst)
 * [Step-step con Dockerfile](guia/Step_step_con_Dockerfile.rst)
 * [Step-step con Dockerfile para Weblogic](guia/Step_step_con_Dockerfile_para_Weblogic.rst)
 * [Export and Import a Docker Image Between Nodes](guia/Export_and_Import_a_Docker_Image_Between_Nodes.rst)

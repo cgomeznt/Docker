@@ -30,34 +30,31 @@ Listar las imágenes descargadas.
 
 Para enumerar las imágenes locales::
 
-	# docker images
+	# docker image ls
 
 Iniciar un contenedor desde imágenes docker
 +++++++++++++++++++++++++++++++++
 
+No deje de ver la documentacion en https://hub.docker.com/ para saber como se debe iniciar el contenedor y como se debe manipular.
+
 Instanciar la imagen descargada y se convertira en un contenedor::
 
 	# docker run nginx
-
-No deje de ver la documentacion en https://hub.docker.com/ para saber como se debe iniciar el contenedor y como se debe manipular.
-
-Inicie un contenedor desde la imagen nginx: 1.14 en segundo plano. Para ejecutar un contenedor en segundo plano, debemos usar la opción “ -d ” modo separado.
-
-Para asignar al servidor un nombre, usando la opción “ –name ” al iniciar un contenedor.::
-
-#	 docker run -d --name nginx-test-server nginx
+	$ sudo docker run --name some-nginx -d -p 8080:80 nginx
 
 Para listar el contenedor en ejecución::
 
 	# docker ps
 
+Probar el contenedor, abrir un navegador y colocar http://localhost:8080
+
 Para detener el contenedor::
 
-	# docker stop nginx-test-server
+	# docker stop some-nginx
 
 Para eliminar el contenedor::
 
-	# docker rm nginx-test-server
+	# docker rm some-nginx
 
 Para eliminar la imagen en el servidor local::
 

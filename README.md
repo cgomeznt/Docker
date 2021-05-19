@@ -4,6 +4,7 @@
 * [Instalar Docker](guia/instalarDocker.rst)
 * [Cambiar la ruta de Docker](guia/rutaDocker.rst)
 * [Buscar y descargar una imagen Docker](guia/buscardescargarDocker.rst)
+* [Crear una Imagen con Dockerfile](guia/Dockerfilesimple.rst)
 * [Dokerizar Apache paso a paso](guia/dockerizarapache.rst)
 * [Dokerizar Gitlab paso a paso](guia/dockerizargitlab.rst)
 * [Step-step con Dockerfile](guia/Step_step_con_Dockerfile.rst)

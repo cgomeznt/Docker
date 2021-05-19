@@ -40,6 +40,9 @@ Creamos un archivo Dockerfile con el siguiente contenido ::
 		mkdir -p /prueba1/EAR && \
 		mkdir -p /prueba2
 
+	RUN	chown -R uprueba.gprueba /prueba
+
+
 Creado la imagen con build
 +++++++++++++++++++++++++++
 ::
@@ -58,33 +61,17 @@ Hacer un listado de las imagenes
 
 Crear el contenedor desde la imagen e iniciarlo
 ++++++++++++++++++++++++++++++++++++++++++++++++
-::
 
-	$ docker run -dti --name "contenedor-demostracion"  \
-	-v /var/www/html:/var/www/html \
-	--mount type=bind,source=/scm/external,target=/scm/external \
-	--mount type=bind,source=/scm/EAR,target=/scm/EAR \
-	-p 1234:80 \
-	--privileged "imagen-demostracion:1.0" /usr/sbin/init
+
+Vamos a crear este contenedor::
+
+	$ sudo docker run -dti --name "contenedor-demostracion1" "imagen-demostracion:1.0"
+
+Ahora creamos este otro::
+
+	$ sudo docker run -dti --name "contenedor-demostracion2" --privileged "imagen-demostracion:1.0" /usr/sbin/init
 
 Estos argumentos "--privileged "imagen-demostracion:1.0" /usr/sbin/init" es para que funcione el systemctl 
-
-ó::
-
-	$ docker run -dti --name "contenedor-demostracion"  --mount type=bind,source=/home/qatest,target=/home/qatest -p 1234:80 "imagen-demostracion:1.0"
-
-ó::
-
-	$ docker run -dti --name "contenedor-demostracion"  -p 1234:80 "imagen-demostracion:1.0"
-
-Ahora bien si estas en un Virtual box, agregale el --network host, claro el parametro -p queda deshabilitado. Tomara el que este expuesto en la imagen::
-
-	$ docker run -dti --name "contenedor-demostracion"  \
-	-v /var/www/html:/var/www/html \
-	--mount type=bind,source=/scm/external,target=/scm/external \
-	--mount type=bind,source=/scm/EAR,target=/scm/EAR \
-	--network host \
-	--privileged "imagen-demostracion:1.0" /usr/sbin/init
 
 
 Consultar los contenedores que están iniciados.
@@ -97,74 +84,60 @@ Ingresar al Contenedor en modo bash
 +++++++++++++++++++++++++++++++++++
 ::
 
-	$ docker exec -i -t contenedor-demostracion /bin/bash
-	[oracle@ecde063fb19c /]$ 
+	$ docker exec -i -t contenedor-demostracion1 /bin/bash
+	[root@e3330f11ec2f /]# systemctl 
+	Failed to get D-Bus connection: Operation not permitted
 
-Verificamos colocando en un navegador la URL administrativa del Weblogic.
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Ingresamos al otro contenedor::
 
-Listo podemos abrir un navegador y verificar que ya el Apache este operativo
-http://nodo1:1234
+	$ sudo docker exec -i -t contenedor-demostracion2 /bin/bash
+	[root@ed2792abecd2 /]# systemctl
+		[...]
 
-Y si es en un virtual Box, recuerda que es el puerto por donde lo expones, en este caso sera el 80
-http://nodo1
-
-Ahora vamos a crear un archivo index para terminar con el laboratorio en el volumen persistente::
-
-	$ sudo vi /var/www/html/index.html
-
-	<html>
-	  <head>
-		<title>www.Docker-Demostracion.com</title>
-	  </head>
-	  <body>
-		<h1>Felicitaciones, esta es un Apache dentro de un Contenedor Docker Demostracion</h1>
-	  </body>
-	</html>
-
-Volvemos a consultar
-http://nodo1:8080
-
-Y si es en un virtual Box, recuerda que es el puerto por donde lo expones, en este caso sera el 80
-http://nodo1
-
-Listo ahora algunos comando de utilidad.
 
 Detener el Contenedores
 ++++++++++++++++++++++++	
 ::
 
-	$ docker stop contenedor-demostracion
+	$ sudo docker stop contenedor-demostracion1
 
-Listar los Contenedores que no estan iniciados
+	$ sudo docker stop contenedor-demostracion2
+
+Listar los Contenedores que no estan instanciados
 ++++++++++++++++++++++++++++++++++++++++++++++++
 ::
 
-	$ docker ps -f "status=exited"
+	$ sudo docker ps -f "status=exited"
 
 Iniciar el Contenedores
 +++++++++++++++++++++++++++
 ::
 
-	$ docker start contenedor-demostracion
+	$ sudo docker start contenedor-demostracion1
 
 Inspeccionar las configuraciones del Contenedores
 +++++++++++++++++++++++++++++++++++++++++++++++++
 ::
 
-	$  docker container inspect contenedor-demostracion
+	$ sudo docker container inspect contenedor-demostracion1
 
 Borrar un Contenedores
 ++++++++++++++++++++++
 ::
 
-	$ docker stop contenedor-demostracion && docker rm contenedor-demostracion
+	$ sudo docker stop contenedor-demostracion1
+	
+	$ sudo docker rm contenedor-demostracion1
+
+	$ sudo docker rm contenedor-demostracion2
 
 Borrar una Imagen
 ++++++++++++++++++++
 ::
 
-	$ docker rmi fd40a4b4601f
+	$ sudo docker images
+
+	$ sudo docker rmi imagen-demostracion:1.0
 
 
 Borrar Volumen huérfanos

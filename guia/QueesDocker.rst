@@ -191,6 +191,13 @@ Para crear el grupo de acopladores y agregar a su usuario:
 
 	# usermod -aG docker oracle
 
+4. Ejecutar el newgrp::
+
+	# newgrp docker 
+4. Verificar que pueda correr docker sin usar el comando sudo.::
+	
+	$ docker run hello-world
+
 5. Al usuario le damos privilegios de sudo.::
 
 	# visudo

@@ -2,10 +2,12 @@
 
 * [¿Qué es Docker? - Primeros Pasos](guia/QueesDocker.rst)
 * [Instalar Docker](guia/instalarDocker.rst)
+* [Administrar Docker como un usuario no root](guia/usuarionoroot.rst)
 * [Cambiar la ruta de Docker](guia/rutaDocker.rst)
 * [Buscar y descargar una imagen Docker](guia/buscardescargarDocker.rst)
 * [Crear una Imagen con Dockerfile](guia/Dockerfilesimple.rst)
 * [Guardar los cambios del contenedor en una nueva imagen](guia/cambioscontenedornuevaimagen.rst)
+* [Comandos más utilizados](guia/comandosmasutilizados.rst)
 * [Dokerizar Apache paso a paso](guia/dockerizarapache.rst)
 * [Dokerizar Gitlab paso a paso](guia/dockerizargitlab.rst)
 * [Step-step con Dockerfile](guia/Step_step_con_Dockerfile.rst)
@@ -15,6 +17,11 @@
 * [Docker paso a paso para CONSIS con WebLogic](guia/Docker_paso_paso_CONSIS_WebLogic.rst)
 * [Docker paso a paso para CONSIS con WAS](guia/Docker_paso_paso_CONSIS_WAS.rst)
 * [Un buen build run exec para CONSIS](guia/build-run-exec.rst)
+
+Crear y mantener imágenes de contenedores de Docker
+Publicar imágenes de contenedores personalizados en un repositorio privado
+Implementar aplicaciones de varios niveles con la ayuda de contenedores
+Utilizar Docker para una aplicación existente
 
 
 

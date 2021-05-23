@@ -37,6 +37,15 @@ En el host hacer un curl localhost y ver los resultados
 Corrige la falla 
 luego que corrijas la falla el curl debe funcionar en le host y en el contenedor. He visto que hay dos (2) formas de corregir
 
+trabajas con volumenes persistentes
+
+Monitorear los contenedores
+docker logs
+docker info
+docker stats
+docker events
+docker container inspect contenedor
+
 
 
 

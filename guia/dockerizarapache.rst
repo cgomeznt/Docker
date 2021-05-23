@@ -181,6 +181,11 @@ Inspeccionar las configuraciones del Contenedores
 
 	$  docker container inspect apache1.0
 
+Ver el consumo de recursos del Contenedor
+++++++++++++++++++++++++++++
+
+	$ docker stats
+
 Borrar un Contenedores
 ++++++++++++++++++++++
 ::

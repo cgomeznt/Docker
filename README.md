@@ -18,6 +18,7 @@
 * [Docker paso a paso para CONSIS con WebLogic](guia/Docker_paso_paso_CONSIS_WebLogic.rst)
 * [Docker paso a paso para CONSIS con WAS](guia/Docker_paso_paso_CONSIS_WAS.rst)
 * [Un buen build run exec para CONSIS](guia/build-run-exec.rst)
+* [Monitorizar Docker](guia/monitorizar.rst)
 
 Crear y mantener imágenes de contenedores de Docker
 Publicar imágenes de contenedores personalizados en un repositorio privado

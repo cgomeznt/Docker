@@ -14,7 +14,7 @@ Crear un directorio de trabajo
 
 	$ mkdir laboratorio
 	$ cd laboratorio/
-	[oracle@nodo1 laboratorio]$
+	$
 
 Crear el archivo Dockerfile
 +++++++++++++++++++++++++++
@@ -72,9 +72,9 @@ Nos aseguramos que estamos en el directorio de trabajo y que están todos los ar
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ::
 
-	[oracle@nodo1 laboratorio]$ pwd
-	[oracle@nodo1 laboratorio]$ ls
-		Dockerfile  
+	$ pwd
+	$ ls
+	   Dockerfile  
 
 Creado la imagen con build
 +++++++++++++++++++++++++++

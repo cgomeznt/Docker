@@ -1,0 +1,44 @@
+Hacer ifconfig y ver la IP del adaptador Docker
+
+Crear un Docker file con solo la instalacion de Httpd (apache:1.0)
+hacer el build sin el--build-arg PORT=80
+en el host hacer netstat -nat | grep -i listen
+hacer el run sin -p 
+en el host hacer netstat -nat | grep -i listen
+consultar docker ps y ver la columna PORT
+iniciar el apache en el contenedor
+en el contenedor hacer un curl localhost
+consultar docker ps y ver la columna PORT
+en el contenedor netstat -nat | grep -i listen
+Evaluar resultado
+
+Crear un Docker file con solo la instalacion de Httpd y colocar el EXPOSE 80 8080 (apache:2.0)
+hacer el build sin el--build-arg PORT=80
+en el host hacer netstat -nat | grep -i listen
+hacer el run sin -p 
+en el host hacer netstat -nat | grep -i listen
+consultar docker ps y ver la columna PORT ( 80/tcp, 8080/tcp )
+iniciar el apache en el contenedor
+en el contenedor consultar el netstat
+en el contenedor hacer un curl localhost
+En el host hacer un curl localhost y ver los resultados
+Evaluar resultado
+
+Crear un Docker file con solo la instalacion de Httpd y SIN colocar el EXPOSE 80 8080 (reutilizar apache:1.0)
+hacer el build sin el--build-arg PORT=80 (Si reutilizaste (apache:1.0) no es necesario)
+en el host hacer netstat -nat | grep -i listen
+hacer el run con -p 80:8080
+en el host hacer netstat -nat | grep -i listen
+consultar docker ps y ver la columna PORT (0.0.0.0:80->8080/tcp, :::80->8080/tcp)
+en el contenedor consultar el netstat
+en el contenedor hacer un curl localhost
+En el host hacer un curl localhost y ver los resultados
+¿Porque si el host tiene el puerto 80 abierto y en el contenedor ya esta con el apache iniciado y tiene el puerto 80 iniciado, Aun sigue sin responder el curl?
+Corrige la falla 
+luego que corrijas la falla el curl debe funcionar en le host y en el contenedor. He visto que hay dos (2) formas de corregir
+
+
+
+
+
+

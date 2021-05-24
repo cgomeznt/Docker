@@ -40,6 +40,7 @@ luego que corrijas la falla el curl debe funcionar en le host y en el contenedor
 trabajas con volumenes persistentes
 
 Monitorear los contenedores
+============================
 docker logs
 docker info
 docker stats
@@ -49,6 +50,26 @@ docker container inspect contenedor
 journalctl -u docker.service 
 less /var/log/messages | grep docker
 /var/log/messages
+
+Docker Registry
+===================
+https://docs.docker.com/registry/#:~:text=The%20Registry%20is%20a%20stateless,under%20the%20permissive%20Apache%20license.
+docker images
+docker search registry
+docker run -d -p 5000:5000 --name registry registry:2
+docker image tag nginx localhost:5000/mynginx
+curl localhost:5000/v2/_catalog
+docker push localhost:5000/mynginx
+curl localhost:5000/v2/_catalog
+docker pull localhost:5000/mynginx
+docker images
+sudo docker run --name some-nginx -d -p 8080:80 localhost:5000/mynginx
+docker ps
+docker container stop registry && docker container rm -v registry
+
+docker image --help
+export / import vs save / load
+
 
 
 

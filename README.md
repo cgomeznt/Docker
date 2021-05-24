@@ -8,7 +8,7 @@
 * [Que es Dockerfile](guia/QueesDockerfile.rst)
 * [Crear una Imagen con Dockerfile](guia/Dockerfilesimple.rst)
 * [Guardar los cambios del contenedor en una nueva imagen](guia/cambioscontenedornuevaimagen.rst)
-* [Docker export / import / save / load](guia/exportimportsaveload.rst)
+* [Docker save / load vs export / import](guia/exportimportsaveload.rst)
 * [Comandos más utilizados](guia/comandosmasutilizados.rst)
 * [Dokerizar Apache paso a paso](guia/dockerizarapache.rst)
 * [Dokerizar Gitlab paso a paso](guia/dockerizargitlab.rst)

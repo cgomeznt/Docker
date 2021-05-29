@@ -12,6 +12,7 @@ https://docs.docker.com/compose/compose-file/
 
 https://docs.docker.com/compose/compose-file/compose-file-v3/
 
+https://github.com/compose-spec/compose-spec/blob/master/spec.md
 
 Compose es una herramienta para definir y ejecutar aplicaciones Docker de varios contenedores. Con Compose, usa un archivo YAML para configurar los servicios de su aplicación. Luego, con un solo comando, crea e inicia todos los servicios desde su configuración. Para obtener más información sobre todas las funciones de Compose, consulte la lista de funciones.
 

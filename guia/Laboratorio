@@ -41,6 +41,10 @@ Corrige la falla
 luego que corrijas la falla el curl debe funcionar en le host y en el contenedor. He visto que hay dos (2) formas de corregir
 
 trabajas con volumenes persistentes
+==============================
+
+Docker network
+===============
 
 Monitorizar los contenedores
 ============================
@@ -72,9 +76,6 @@ docker container stop registry && docker container rm -v registry
 
 Docker save / load vs export / import
 ======================================
-
-Docker network
-===============
 
 Docker Compose
 =============

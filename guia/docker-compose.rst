@@ -20,21 +20,23 @@ https://docs.docker.com/compose/#features
 
 El uso de Compose es básicamente un proceso de tres pasos:
 
-Defina el entorno de su aplicación con un Dockerfile para que pueda reproducirse en cualquier lugar.
+	* Defina el entorno de su aplicación con un Dockerfile para que pueda reproducirse en cualquier lugar.
 
-Defina los servicios que componen su aplicación docker-compose.yml para que puedan ejecutarse juntos en un entorno aislado.
+	* Defina los servicios que componen su aplicación docker-compose.yml para que puedan ejecutarse juntos en un entorno aislado.
 
-Ejecutar docker compose up y el comando de composición de Docker se inicia y ejecuta toda la aplicación. Alternativamente, puede ejecutar docker-compose upusando el binario docker-compose.
+	* Ejecutar docker compose up y el comando de composición de Docker se inicia y ejecuta toda la aplicación.
+
+Alternativamente, puede ejecutar docker-compose upusando el binario docker-compose.
 
 Compose tiene comandos para administrar todo el ciclo de vida de su aplicación:
 
-Iniciar, detener y reconstruir servicios.
+	* Iniciar, detener y reconstruir servicios.
 
-Ver el estado de los servicios en ejecución.
+	* Ver el estado de los servicios en ejecución.
 
-Transmita la salida del registro de los servicios en ejecución.
+	* Transmita la salida del registro de los servicios en ejecución.
 
-Ejecute un comando único en un servicio.
+	* Ejecute un comando único en un servicio.
 
 Así se ve docker-compose.yml::
 

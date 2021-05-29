@@ -72,7 +72,7 @@ Muestra una información detallada de uno o más contenedores::
 Ver los logs en le HOST
 ++++++++++++++++++++++++++++++
 
-En el HOST es muy util tambien saber que sucede con el demonio dockerd
+En el HOST es muy util tambien saber que sucede con el demonio dockerd::
 
 	# journalctl -u docker.service 
 	

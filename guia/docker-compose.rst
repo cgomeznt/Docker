@@ -293,10 +293,10 @@ localhost:8800
 
 Primero vamos a consultar docker ps y vemos la columna STATUS cuanto tiempo tiene de vida los contenedores::
 
-$ docker ps
-CONTAINER ID   IMAGE            COMMAND            CREATED         STATUS         PORTS                                   NAMES
-ea05b40a8c2d   apache-run:1.0   "/usr/sbin/init"   3 minutes ago   Up 3 minutes   0.0.0.0:8800->80/tcp, :::8800->80/tcp   my-web-02
-2da3029979f0   apache-run:1.0   "/usr/sbin/init"   3 minutes ago   Up 3 minutes   0.0.0.0:6379->80/tcp, :::6379->80/tcp   laboratorio_web_2
+	$ docker ps
+	CONTAINER ID   IMAGE            COMMAND            CREATED         STATUS         PORTS                                   NAMES
+	ea05b40a8c2d   apache-run:1.0   "/usr/sbin/init"   3 minutes ago   Up 3 minutes   0.0.0.0:8800->80/tcp, :::8800->80/tcp   my-web-02
+	2da3029979f0   apache-run:1.0   "/usr/sbin/init"   3 minutes ago   Up 3 minutes   0.0.0.0:6379->80/tcp, :::6379->80/tcp   laboratorio_web_2
 
 En este caso tiene 3 minutos.
 

@@ -1,9 +1,9 @@
 Hacer ifconfig y ver la IP del adaptador Docker
 
-Crear un Docker file con solo la instalacion de Httpd (apache:1.0)
+Crear un Dockerfile con solo la instalación de httpd (llamar a la imagen apache:1.0)
 hacer el build sin el--build-arg PORT=80
 en el host hacer netstat -nat | grep -i listen
-hacer el run sin -p 
+hacer el run sin -p 1234:80
 en el host hacer netstat -nat | grep -i listen
 consultar docker ps y ver la columna PORT
 iniciar el apache en el contenedor
@@ -12,24 +12,27 @@ consultar docker ps y ver la columna PORT
 en el contenedor netstat -nat | grep -i listen
 Evaluar resultado
 
-Crear un Docker file con solo la instalacion de Httpd y colocar el EXPOSE 80 8080 (apache:2.0)
+Crear un Docker file con solo la instalación de Httpd y colocar el EXPOSE 80 (apache:2.0)
 hacer el build sin el--build-arg PORT=80
 en el host hacer netstat -nat | grep -i listen
-hacer el run sin -p 
+hacer el run sin -p 1234:80
 en el host hacer netstat -nat | grep -i listen
-consultar docker ps y ver la columna PORT ( 80/tcp, 8080/tcp )
+consultar docker ps y ver la columna PORT ( 80/tcp )
 iniciar el apache en el contenedor
 en el contenedor consultar el netstat
 en el contenedor hacer un curl localhost
 En el host hacer un curl localhost y ver los resultados
+hacer docker container inspect nombre_del_contenedor y ver la IP
+En el host hacer un curl 172.17.0.2 y ver los resultados
 Evaluar resultado
 
-Crear un Docker file con solo la instalacion de Httpd y SIN colocar el EXPOSE 80 8080 (reutilizar apache:1.0)
+Crear un Docker file con solo la instalación de Httpd y SIN colocar el EXPOSE 80 8080 (reutilizar apache:1.0)
 hacer el build sin el--build-arg PORT=80 (Si reutilizaste (apache:1.0) no es necesario)
 en el host hacer netstat -nat | grep -i listen
 hacer el run con -p 80:8080
 en el host hacer netstat -nat | grep -i listen
 consultar docker ps y ver la columna PORT (0.0.0.0:80->8080/tcp, :::80->8080/tcp)
+iniciar el apache en el contenedor
 en el contenedor consultar el netstat
 en el contenedor hacer un curl localhost
 En el host hacer un curl localhost y ver los resultados
@@ -39,7 +42,7 @@ luego que corrijas la falla el curl debe funcionar en le host y en el contenedor
 
 trabajas con volumenes persistentes
 
-Monitorear los contenedores
+Monitorizar los contenedores
 ============================
 docker logs
 docker info
@@ -67,8 +70,14 @@ sudo docker run --name some-nginx -d -p 8080:80 localhost:5000/mynginx
 docker ps
 docker container stop registry && docker container rm -v registry
 
-docker image --help
-export / import vs save / load
+Docker save / load vs export / import
+======================================
+
+Docker network
+===============
+
+Docker Compose
+=============
 
 
 

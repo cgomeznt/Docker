@@ -300,7 +300,7 @@ Primero vamos a consultar docker ps y vemos la columna STATUS cuanto tiempo tien
 
 En este caso tiene 3 minutos.
 
-Ahora vamos a consultar de uno de los contenedores cual es su PID::
+Ahora vamos a consultar uno de los contenedores cual es su PID::
 
 	$ docker container inspect laboratorio_web_2 | grep Pid
 		    "Pid": 1338,
@@ -314,12 +314,12 @@ Matamos el PID del contenedor::
 
 Inmediatamente volvemos a consultar docker ps::
 
-o$ docker ps
-CONTAINER ID   IMAGE            COMMAND            CREATED         STATUS              PORTS                                   NAMES
-ea05b40a8c2d   apache-run:1.0   "/usr/sbin/init"   7 minutes ago   Up 3 minutes    0.0.0.0:8800->80/tcp, :::8800->80/tcp   my-web-02
-2da3029979f0   apache-run:1.0   "/usr/sbin/init"   7 minutes ago   Up 7 seconds        0.0.0.0:6379->80/tcp, :::6379->80/tcp   laboratorio_web_2
+	$ docker ps
+	CONTAINER ID   IMAGE            COMMAND            CREATED         STATUS              PORTS                                   NAMES
+	ea05b40a8c2d   apache-run:1.0   "/usr/sbin/init"   7 minutes ago   Up 3 minutes    0.0.0.0:8800->80/tcp, :::8800->80/tcp   my-web-02
+	2da3029979f0   apache-run:1.0   "/usr/sbin/init"   7 minutes ago   Up 7 seconds        0.0.0.0:6379->80/tcp, :::6379->80/tcp   laboratorio_web_2
 
-Vemos como inmediatamente se crea nuevamente el contenedor.
+Vemos como inmediatamente se crea nuevamente el contenedor, se evidencia que tiene de vida 7 segundos
 
 
 

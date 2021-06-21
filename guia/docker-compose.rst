@@ -107,6 +107,7 @@ Este laboratorio consiste en que se generen dos contenedores desde nuestra image
 			<title>www.Docker-Demostracion.com</title>
 		  </head>
 		  <body>
+			<h1>Service Web 1</h1>
 			<h1>Felicitaciones, esta es un Apache dentro de un Contenedor Docker Demostracion</h1>
 			<h3>Felicitaciones, Creado con Docker Compose, service web</h3>
 		  </body>
@@ -120,6 +121,7 @@ Este laboratorio consiste en que se generen dos contenedores desde nuestra image
 			<title>www.Docker-Demostracion.com</title>
 		  </head>
 		  <body>
+			<h1>Service Web 2</h1>
 			<h1>Felicitaciones, esta es un Apache dentro de un Contenedor Docker Demostracion</h1>
 			<h3>Felicitaciones, Creado con Docker Compose, service web2 </h3>
 		  </body>
@@ -132,9 +134,9 @@ Este laboratorio consiste en que se generen dos contenedores desde nuestra image
 	services:
 
 	  web:
-	    image: apache-run:1.0
+	    image: apache-centos7:1.0
 	    ports:
-	      - "6379:80"
+	      - "8080:80"
 	    networks:
 	      - frontend
 	    volumes:
@@ -153,20 +155,20 @@ Este laboratorio consiste en que se generen dos contenedores desde nuestra image
 		max_attempts: 3
 		window: 120s
 	  web2:
-	    image: apache-run:1.0
+	    image: apache-alpine:1.0
 	    container_name: my-web-02
 	    ports:
-	      - "8800:80"
+	      - "8081:80"
 	    networks:
 	      - frontend
 	      - backend
 	    volumes:
-	      - ./html2:/var/www/html
-	    privileged: true
+	      - ./html2:/var/www/localhost/htdocs
 
 	networks:
 	  frontend:
 	  backend:
+
 
 
 **Iniciamos el Docker Compose**::

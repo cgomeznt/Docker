@@ -135,6 +135,7 @@ Este laboratorio consiste en que se generen dos contenedores desde nuestra image
 
 	  web:
 	    image: apache-centos7:1.0
+	    container_name: my-web-01
 	    ports:
 	      - "8080-8082:80"
 	    networks:
@@ -143,9 +144,9 @@ Este laboratorio consiste en que se generen dos contenedores desde nuestra image
 	      - ./html1:/var/www/html
 	    privileged: true
 	    deploy:
-	      replicas: 2
+	      replicas: 1
 	      placement:
-		max_replicas_per_node: 2
+		max_replicas_per_node: 1
 	      update_config:
 		parallelism: 2
 		delay: 10s
@@ -178,17 +179,20 @@ Este laboratorio consiste en que se generen dos contenedores desde nuestra image
 	WARNING: The following deploy sub-keys are not supported and have been ignored: update_config, restart_policy.delay, restart_policy.window
 	Creating network "laboratorio_frontend" with the default driver
 	Creating network "laboratorio_backend" with the default driver
-	Creating my-web-02 ... done
-	Creating my-web-01 ... done
+	Creating laboratorio_web_1 ... done
+	Creating my-web-02         ... done
+
 
 **Consultamos docker-compose ps**::
 
 	$ docker-compose ps
 	WARNING: The following deploy sub-keys are not supported and have been ignored: update_config, restart_policy.delay, restart_policy.window
-	  Name         Command       State                  Ports                
-	-------------------------------------------------------------------------
-	my-web-01   /usr/sbin/init   Up      0.0.0.0:6379->80/tcp,:::6379->80/tcp
-	my-web-02   /usr/sbin/init   Up      0.0.0.0:8800->80/tcp,:::8800->80/tcp
+	      Name                     Command               State                  Ports                
+	-------------------------------------------------------------------------------------------------
+	laboratorio_web_1   /usr/sbin/init                   Up      0.0.0.0:8081->80/tcp,:::8081->80/tcp
+	my-web-02           /bin/sh -c exec /usr/sbin/ ...   Up      0.0.0.0:8090->80/tcp,:::8090->80/tcp
+
+
 
 **Consultamos la Redes**::
 
@@ -203,33 +207,36 @@ Este laboratorio consiste en que se generen dos contenedores desde nuestra image
 **Vemos con docker los contenedores**::
 
 	$ docker ps 
-	CONTAINER ID   IMAGE            COMMAND            CREATED         STATUS         PORTS                                   NAMES
-	94dfba021a1e   apache-run:1.0   "/usr/sbin/init"   3 minutes ago   Up 3 minutes   0.0.0.0:6379->80/tcp, :::6379->80/tcp   my-web-01
-	d1c68a288938   apache-run:1.0   "/usr/sbin/init"   3 minutes ago   Up 3 minutes   0.0.0.0:8800->80/tcp, :::8800->80/tcp   my-web-02
-
+	CONTAINER ID   IMAGE                    COMMAND                  CREATED          STATUS          PORTS                                   NAMES
+	8ee0e688e2a3   apache-centos7:1.0       "/usr/sbin/init"         15 minutes ago   Up 15 minutes   0.0.0.0:8082->80/tcp, :::8082->80/tcp   laboratorio_web_1
+	1fb811ba2f9e   apache-alpine:1.0        "/bin/sh -c 'exec /u…"   15 minutes ago   Up 15 minutes   0.0.0.0:8090->80/tcp, :::8090->80/tcp   my-web-02
 
 **Verificamos el contenido de los contenedores**::
 
-	$ docker container inspect my-web-01
+	$ docker container inspect laboratorio_web_1
 	$ docker container inspect my-web-02
 
 **Detenemos y removemos todos los servicios creados con docker compose**::
 
 	$ docker-compose down
 	WARNING: The following deploy sub-keys are not supported and have been ignored: update_config, restart_policy.delay, restart_policy.window
-	Stopping my-web-01 ... done
-	Stopping my-web-02 ... done
-	Removing my-web-01 ... done
-	Removing my-web-02 ... done
+	Stopping my-web-02         ... done
+	Stopping laboratorio_web_1 ... done
+	Removing my-web-02         ... done
+	Removing laboratorio_web_1 ... done
 	Removing network laboratorio_frontend
 	Removing network laboratorio_backend
 
-Editamos el archivo docker-compose.yml, buscamos esta linea::
 
+
+Editamos el archivo docker-compose.yml, buscamos estas lineas::
+
+	replicas: 1
 	max_replicas_per_node: 1
 
 cambiamos el 1 por 2, nos queda así::
 
+	replicas: 2
 	max_replicas_per_node: 2
 
 Buscamos esta también y la removemos, porque para hacerlo escalable no podemos tener los nombres especificado de los containers::
@@ -243,37 +250,32 @@ Volvemos a crear e iniciar los contedores publicados en el YML, póngale cuidado
 	Creating network "laboratorio_frontend" with the default driver
 	Creating network "laboratorio_backend" with the default driver
 	WARNING: The "web" service specifies a port on the host. If multiple containers for this service are created on a single host, the port will clash.
-	Creating laboratorio_web_1 ... 
-	Creating laboratorio_web_1 ... error
+	Creating my-web-02         ... done
+	Creating laboratorio_web_1 ... done
 	Creating laboratorio_web_2 ... done
-	WARNING: Host is already in use by another container
 
-	ERROR: for laboratorio_web_1  Cannot start service web: driver failed programming external connectivity on endpoint laboratorio_web_1 (4febebb6d0b69cbCreating my-web-02         ... done
-
-	ERROR: for web  Cannot start service web: driver failed programming external connectivity on endpoint laboratorio_web_1 (4febebb6d0b69cb1d36f5af30d0929340db5741e5c80abea71493b35f1352985): Bind for 0.0.0.0:6379 failed: port is already allocated
-	ERROR: Encountered errors while bringing up the project.
-
-Como se dan cuenta al Creating laboratorio_web_1 genera un error y es logico no estamos controlando que sea otro puerto, por eso no podemos tener dos container en este mismo host. (Ojo es solo en este ejemplo)
 
 Consultamos docker-compose ps::
 
 	$ docker-compose ps 
-
-
 	WARNING: The following deploy sub-keys are not supported and have been ignored: update_config, restart_policy.delay, restart_policy.window
-	      Name             Command        State                    Ports                
-	------------------------------------------------------------------------------------
-	laboratorio_web_1   /usr/sbin/init   Exit 128                                       
-	laboratorio_web_2   /usr/sbin/init   Up         0.0.0.0:6379->80/tcp,:::6379->80/tcp
-	my-web-02           /usr/sbin/init   Up         0.0.0.0:8800->80/tcp,:::8800->80/tcp
+	      Name                     Command               State                  Ports                
+	-------------------------------------------------------------------------------------------------
+	laboratorio_web_1   /usr/sbin/init                   Up      0.0.0.0:8080->80/tcp,:::8080->80/tcp
+	laboratorio_web_2   /usr/sbin/init                   Up      0.0.0.0:8082->80/tcp,:::8082->80/tcp
+	my-web-02           /bin/sh -c exec /usr/sbin/ ...   Up      0.0.0.0:8090->80/tcp,:::8090->80/tcp
+
+
 
 
 Consultamos docker ps::
 
 	docker ps 
-	CONTAINER ID   IMAGE            COMMAND            CREATED         STATUS         PORTS                                   NAMES
-	a762c8449e75   apache-run:1.0   "/usr/sbin/init"   3 minutes ago   Up 3 minutes   0.0.0.0:8800->80/tcp, :::8800->80/tcp   my-web-02
-	d08b4f2ab1a8   apache-run:1.0   "/usr/sbin/init"   3 minutes ago   Up 3 minutes   0.0.0.0:6379->80/tcp, :::6379->80/tcp   laboratorio_web_2
+	CONTAINER ID   IMAGE                    COMMAND                  CREATED          STATUS          PORTS                                   NAMES
+	fbf0242c9fe8   apache-centos7:1.0       "/usr/sbin/init"         56 seconds ago   Up 54 seconds   0.0.0.0:8082->80/tcp, :::8082->80/tcp   laboratorio_web_2
+	1a45f1e285c7   apache-centos7:1.0       "/usr/sbin/init"         56 seconds ago   Up 54 seconds   0.0.0.0:8080->80/tcp, :::8080->80/tcp   laboratorio_web_1
+	78743b8adcb0   apache-alpine:1.0        "/bin/sh -c 'exec /u…"   56 seconds ago   Up 53 seconds   0.0.0.0:8090->80/tcp, :::8090->80/tcp   my-web-02
+
 
 
 Consultamos las redes::
@@ -286,11 +288,13 @@ Consultamos las redes::
 	eac4318c96e9   laboratorio_frontend   bridge    local
 	2ea85b178fec   none                   null      local
 
-Vamos ahora a un navegador y probamos estas dos (2) URL y leemos el contenido que nos ayuda a identificar:
+Vamos ahora a un navegador y probamos estas tres (3) URL y leemos el contenido que nos ayuda a identificar:
 
-localhost:6379
+localhost:8080
 
-localhost:8800
+localhost:8082
+
+localhost:8090
 
 **Ahora vamos a probar que funcione el restart cuando existe una falla**
 
@@ -298,9 +302,11 @@ localhost:8800
 Primero vamos a consultar docker ps y vemos la columna STATUS cuanto tiempo tiene de vida los contenedores::
 
 	$ docker ps
-	CONTAINER ID   IMAGE            COMMAND            CREATED         STATUS         PORTS                                   NAMES
-	ea05b40a8c2d   apache-run:1.0   "/usr/sbin/init"   3 minutes ago   Up 3 minutes   0.0.0.0:8800->80/tcp, :::8800->80/tcp   my-web-02
-	2da3029979f0   apache-run:1.0   "/usr/sbin/init"   3 minutes ago   Up 3 minutes   0.0.0.0:6379->80/tcp, :::6379->80/tcp   laboratorio_web_2
+	CONTAINER ID   IMAGE                    COMMAND                  CREATED         STATUS         PORTS                                   NAMES
+	fbf0242c9fe8   apache-centos7:1.0       "/usr/sbin/init"         3 minutes ago   Up 3 minutes   0.0.0.0:8082->80/tcp, :::8082->80/tcp   laboratorio_web_2
+	1a45f1e285c7   apache-centos7:1.0       "/usr/sbin/init"         3 minutes ago   Up 3 minutes   0.0.0.0:8080->80/tcp, :::8080->80/tcp   laboratorio_web_1
+	78743b8adcb0   apache-alpine:1.0        "/bin/sh -c 'exec /u…"   3 minutes ago   Up 3 minutes   0.0.0.0:8090->80/tcp, :::8090->80/tcp   my-web-02
+
 
 En este caso tiene 3 minutos.
 
@@ -319,11 +325,13 @@ Matamos el PID del contenedor::
 Inmediatamente volvemos a consultar docker ps::
 
 	$ docker ps
-	CONTAINER ID   IMAGE            COMMAND            CREATED         STATUS              PORTS                                   NAMES
-	ea05b40a8c2d   apache-run:1.0   "/usr/sbin/init"   7 minutes ago   Up 3 minutes    0.0.0.0:8800->80/tcp, :::8800->80/tcp   my-web-02
-	2da3029979f0   apache-run:1.0   "/usr/sbin/init"   7 minutes ago   Up 7 seconds        0.0.0.0:6379->80/tcp, :::6379->80/tcp   laboratorio_web_2
+	CONTAINER ID   IMAGE                    COMMAND                  CREATED         STATUS          PORTS                                   NAMES
+	fbf0242c9fe8   apache-centos7:1.0       "/usr/sbin/init"         4 minutes ago   Up 11 seconds   0.0.0.0:8081->80/tcp, :::8081->80/tcp   laboratorio_web_2
+	1a45f1e285c7   apache-centos7:1.0       "/usr/sbin/init"         4 minutes ago   Up 4 minutes    0.0.0.0:8080->80/tcp, :::8080->80/tcp   laboratorio_web_1
+	78743b8adcb0   apache-alpine:1.0        "/bin/sh -c 'exec /u…"   4 minutes ago   Up 4 minutes    0.0.0.0:8090->80/tcp, :::8090->80/tcp   my-web-02
 
-Vemos como inmediatamente se crea nuevamente el contenedor, se evidencia que tiene de vida 7 segundos
+
+Vemos como inmediatamente se crea nuevamente el contenedor, se evidencia que tiene de vida 11 segundos
 
 
 

@@ -136,7 +136,7 @@ Este laboratorio consiste en que se generen dos contenedores desde nuestra image
 	  web:
 	    image: apache-centos7:1.0
 	    ports:
-	      - "8080:80"
+	      - "8080-8082:80"
 	    networks:
 	      - frontend
 	    volumes:
@@ -158,7 +158,7 @@ Este laboratorio consiste en que se generen dos contenedores desde nuestra image
 	    image: apache-alpine:1.0
 	    container_name: my-web-02
 	    ports:
-	      - "8081:80"
+	      - "8090:80"
 	    networks:
 	      - frontend
 	      - backend
@@ -168,6 +168,7 @@ Este laboratorio consiste en que se generen dos contenedores desde nuestra image
 	networks:
 	  frontend:
 	  backend:
+
 
 
 

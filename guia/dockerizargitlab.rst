@@ -42,8 +42,13 @@ Así quedaría el archivo Dockerfile y lo copiamos en en directorio docker::
 	RUN sed -i "s/unicorn\['worker_timeout'\] = 60/unicorn\['worker_timeout'\] = 300/g" /etc/gitlab/gitlab.rb
 
 	EXPOSE 22 80 443
+	
+	# Esta opción se deja comentada porque sino el contenedor se configura y se apaga, para evitar comentarla le colocamos el && tail -f /dev/null y es como un ciclo infinito y hace que el contenedo se quede vivo. NO ME GUSTA
+	ENTRYPOINT (/opt/gitlab/embedded/bin/runsvdir-start &) && gitlab-ctl reconfigure
 
-	# ENTRYPOINT (/opt/gitlab/embedded/bin/runsvdir-start &) && gitlab-ctl reconfigure
+**NOTA**  en este link oficial explica porque la configuración del ENTRYPOINT, si no la aplicamos el Gitlab se quedara en la reconfiguración pegado en esta sesión *** ruby_block[wait for redis service socket] action run**
+
+https://gitlab.com/gitlab-org/omnibus-gitlab/-/issues/4257
 
 Copiar los instaladores necesarios y los archivos de configuración que serán utilizados desde el archivo Dockerfile, en nuestra carpeta de trabajo.
 
@@ -63,13 +68,13 @@ Variable de entorno GITLAB_HOME
 
 Para usuarios Linux, configurar la ruta /home/srv/gitlab::
 
-	export GITLAB_HOME=/home/srv/gitlab	
+	export GITLAB_HOME=/home/cgomeznt/srv/gitlab	
 
 Creado la imagen con build
 +++++++++++++++++++++++++++
 ::
 
-	docker build -t "gitlab-ce13.10.0:1.0" ./
+	docker build -t "gitlab-ce:1.0" ./
 
 
 Hacer un listado de las imagenes
@@ -82,18 +87,18 @@ Crear el contenedor desde la imagen e iniciarlo
 ++++++++++++++++++++++++++++++++++++++++++++++++
 ::
 
-docker run --name gitlab-ce13.10.0 -itd --shm-size=4g --restart=on-failure  -p 8080:80 -p 8022:22 -p 8443:443 -p 5000:5005 --privileged gitlab-ce13.10.0:1.0
-
 	docker run -dti \
-	  --hostname gitlab.example.com \
-	  --publish 443:443 --publish 80:80 --publish 22:22 --publish 5000:5005 \
-	  --name gitlab-ce13.10.0 \
-	  --shm-size=4g \
-	  --restart=on-failure \
-	  --volume $GITLAB_HOME/config:/etc/gitlab \
-	  --volume $GITLAB_HOME/logs:/var/log/gitlab \
-	  --volume $GITLAB_HOME/data:/var/opt/gitlab \
-	  --privileged "gitlab-ce13" /usr/sbin/init
+	--hostname gitlab.dominio.local \
+	--publish 443:443 \
+	--publish 80:80 \
+	--publish 22:22 \
+	--publish 5000:5005 \
+	--name gitlab \
+	--shm-size=4g \
+	--restart=on-failure \
+	--volume $GITLAB_HOME/config:/etc/gitlab \
+	--volume $GITLAB_HOME/logs:/var/log/gitlab \
+	--volume $GITLAB_HOME/data:/var/opt/gitlab --privileged gitlab-ce:1.0 /usr/sbin/init
 
 
 Estos argumentos "--privileged "gitlab-ce13.10.0:1.0" /usr/sbin/init" es para que funcione el systemctl 
@@ -102,7 +107,7 @@ Visualizar el log
 ++++++++++++++++++++++++
 ::
 
-	docker logs -f gitlab-ce13.10.0
+	docker logs -f gitlab
 
 
 Consultar los contenedores que están iniciados.
@@ -111,23 +116,43 @@ Consultar los contenedores que están iniciados.
 
 	$ docker ps
 
-Ingresar al Contenedor en modo bash
+Ingresar al Contenedor en modo bash 
 +++++++++++++++++++++++++++++++++++
-::
+Este paso lo ejecutamos si en el Dockerfile dejamos comentada la linea del ENTRYPOINT::
 
-	$ docker exec -i -t gitlab-ce13.10.0:1.0 /bin/bash
+	$ docker exec -i -t gitlab /bin/bash
 	[@ecde063fb19c /]$ 
 
 Culminar la configuración de Gitlab
 ++++++++++++++++++++++++++++++
+Este paso lo ejecutamos si en el Dockerfile dejamos comentada la linea del ENTRYPOINT::
 
 	[@ecde063fb19c /]$ /opt/gitlab/embedded/bin/runsvdir-start &
 	[@ecde063fb19c /]$ gitlab-ctl reconfigure
 
 Habilitar el Gitlab Container Registry
 +++++++++++++++++++++++++++++++++++
-::
+Este paso lo ejecutamos si en el Dockerfile dejamos comentada la linea del ENTRYPOINT::
 
 	vi /etc/gitlab/gitlab.rb
-	registry_external_url 'http://gitlab.example.com'
+	registry_external_url 'http://gitlab.dominio.local'
+
+
+Dokerizar Gitlab-Runner paso a paso
+===============================
+
+Vamos a Dokerizar Gitlab-Runner paso a paso en este docker.
+
+Como instalarlo
+++++++++++++++++
+
+https://docs.gitlab.com/runner/install/linux-manually.html
+
+Como Registrar
++++++++++++++++
+
+https://docs.gitlab.com/runner/register/index.html#linux
+
+
+
 

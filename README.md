@@ -23,10 +23,6 @@
 * [Un buen build run exec para CONSIS](guia/build-run-exec.rst)
 
 
-Crear y mantener imágenes de contenedores de Docker
-Publicar imágenes de contenedores personalizados en un repositorio privado
-Implementar aplicaciones de varios niveles con la ayuda de contenedores
-Utilizar Docker para una aplicación existente
 
 [cgomez@lcsprdapptdldap02 ~]$ sudo cat /etc/cron.d/gestionlogs
 #@midnight root find /var/lib/ldap/*.gz -exec rm {} \; 1> /dev/null 2> /dev/null

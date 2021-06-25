@@ -3,7 +3,7 @@ Dokerizar Gitlab Gitlab-Runner Centos 7
 
 Vamos a Dokerizar Gitlab, Gitlab-Runner paso a paso en este docker.
 
-Recordemos deshabilitar el selinux y firewall, importante tener una buena configuración de DNS o en el archivo HOSTS, nuestro dominio se llamara **dominio.local** y tambien vamos a crear una Netword de docker llamada **app** para que los contenedores puedan resolver por nombre DNS
+Recordemos deshabilitar el selinux y firewall, importante tener una buena configuración de DNS o en el archivo HOSTS, nuestro dominio se llamara **dominio.local** y también vamos a crear una Network de docker llamada **app** para que los contenedores puedan resolver por nombre DNS
 
 **Descargamos una imagen de Centos 7**::
 
@@ -89,6 +89,10 @@ Nos salimos del contenedor y consultamos que IP tiene::
 La IP que nos arroje se la cargamos a nuestro archivo HOST en donde esta corriendo el contenedor::
 
 	echo "172.18.0.3	gitlab.dominio.local" >> /etc/hosts
+
+Tambien podemos utilizar la IP del HOST::
+
+	echo "1192.168.1.5	gitlab.dominio.local" >> /etc/hosts
 
 Listo, con esto ya podemos cargar la pagina de gitlab y cambiar la clave de root, http://gitlab.dominio.local
 

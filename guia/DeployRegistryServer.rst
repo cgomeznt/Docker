@@ -31,7 +31,10 @@ Running a registry only accessible on localhost has limited usefulness. In order
 
 This example is extended in Run the registry as a service below.
 
-Debemos crear los certificados primero con **openssl**
+Debemos crear los certificados primero con **openssl** creamos el un directorio de trabajo::
+
+	mkdir certs
+	cd certs
 
 https://gist.github.com/fntlnz/cf14feb5a46b2eda428e000157447309
 
@@ -75,7 +78,7 @@ Y dentro de esa carpeta debemos copiar el certificado del servidor y la CA que l
 
 	cp registry.crt rootCA.crt /etc/docker/certs.d/registry\:5000/
 
-Se instancia el contenedor de Registry::
+Se instancia el contenedor de Registry, debemos estar un peldaño sobre la carpeta certs, donde están los certificados::
 
 	docker run -d \
 	  --restart=always \

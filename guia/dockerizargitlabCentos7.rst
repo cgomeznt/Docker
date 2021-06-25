@@ -99,6 +99,10 @@ http://gitlab.dominio.local
 
 **Instalamos Docker**
 
+**Ingresamos en le contenedor**::
+
+	docker exec -ti gitlab bash
+
 https://docs.docker.com/engine/install/centos/ ::
 
 	yum install -y yum-utils

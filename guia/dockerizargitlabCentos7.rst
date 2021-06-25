@@ -144,9 +144,26 @@ https://stackoverflow.com/questions/56663096/gitlab-runner-doesnt-work-on-a-spec
 	git --version
 
 
-**Registramos un runner dentro del gitlab**::
+**Registramos un runner dentro del gitlab** debemos tener primero el token de gitlab, ingresemos a gitlab.dominio.local
+
+.. figure:: https://github.com/cgomeznt/Gitlab/blob/master/images/Docker/02.png
+
+::
 
 	gitlab-runner register
+
+		Enter the GitLab instance URL (for example, https://gitlab.com/):
+		http://gitlab
+		Enter the registration token:
+		diwM-bTpiJxqndAtjacd
+		Enter a description for the runner:
+		[294d980743df]: Runner para ejecutar un Shell
+		Enter tags for the runner (comma-separated):
+		shell-01
+		Registering runner... succeeded                     runner=diwM-bTp
+		Enter an executor: docker, docker+machine, kubernetes, docker-ssh+machine, custom, docker-ssh, parallels, shell, ssh, virtualbox:
+		shell
+		Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded! 
 
 
 

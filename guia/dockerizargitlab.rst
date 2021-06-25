@@ -143,6 +143,8 @@ Dokerizar Gitlab-Runner paso a paso
 
 Vamos a Dokerizar Gitlab-Runner paso a paso en este docker.
 
+Instalar primero Docker
+
 Como instalarlo
 ++++++++++++++++
 

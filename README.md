@@ -12,15 +12,19 @@
 * [Comandos más utilizados](guia/comandosmasutilizados.rst)
 * [Dokerizar Apache paso a paso](guia/dockerizarapache.rst)
 * [Dokerizar Gitlab paso a paso](guia/dockerizargitlab.rst)
+* [Dokerizar Gitlab Gitlab-Runner Centos 7](guia/dockerizargitlabCentos7.rst)
 * [Monitorizar Docker](guia/monitorizar.rst)
 * [Export and Import a Docker Image Between Nodes](guia/Export_and_Import_a_Docker_Image_Between_Nodes.rst)
 * [Docker Compose](guia/docker-compose.rst)
+* [Deploy a Registry Server](DeployRegistryServer.rst)
+* [Docker Insecure Registry](Docker_insecure_registry.rst)
 * [Step-step con Dockerfile CONSIS](guia/Step_step_con_Dockerfile.rst)
 * [Step-step con Dockerfile para Weblogic CONSIS](guia/Step_step_con_Dockerfile_para_Weblogic.rst)
 * [Pasos Actualizar Ambiente CONSIS](guia/Pasos_Actualizar_Ambiente.rst)
 * [Docker paso a paso para CONSIS con WebLogic](guia/Docker_paso_paso_CONSIS_WebLogic.rst)
 * [Docker paso a paso para CONSIS con WAS](guia/Docker_paso_paso_CONSIS_WAS.rst)
 * [Un buen build run exec para CONSIS](guia/build-run-exec.rst)
+
 
 
 

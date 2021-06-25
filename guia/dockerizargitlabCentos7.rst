@@ -176,4 +176,64 @@ Revisar el runner del proyecto, el servicio de gitlab-runner debe estar iniciado
 .. figure:: https://github.com/cgomeznt/Gitlab/blob/master/images/CICD/13.png
 
 
+**Probando el gitlab-runner**, creamos un .gitlab-ci.yml. configuración del archivo .gitlab-ci.yml
+Vas a configurar la pipeline GitLab CI/CD.
+
+Ahora va a crear el archivo .gitlab-ci.yml que contiene la configuración de la pipeline. En GitLab, vaya a la página de descripción general del proyecto, haga clic en el botón + y seleccione New File. Luego, establezca el nombre del archivo en .gitlab-ci.yml.
+
+(Alternativamente, puede clonar el repositorio y realizar todos los cambios siguientes en .gitlab-ci.yml en su máquina local, luego confirmar y enviar al repositorio remoto).
+
+El archivo tendrá el siguiente contenido:::
+
+	stages:
+	  - test
+	  - deploy
+
+	Test:
+	  stage: test
+	  tags:
+	  - shell-01
+	  script:
+	    - echo "write your test here...!!!"
+	 
+	Deploy:
+	  only:
+	    refs:
+	      - master
+	  stage: deploy
+	  tags:
+	    - shell-01
+	  script:
+	    - touch /tmp/prueba.txt
+
+Cuando realice cualquier commit se vera algo como esto, estara en pending o running mientras ejecuta todo.
+
+
+.. figure:: https://github.com/cgomeznt/Gitlab/blob/master/images/Docker/05.png
+
+
+Si no hay errores, después de un rato vera esto
+
+
+.. figure:: https://github.com/cgomeznt/Gitlab/blob/master/images/Docker/06.png
+
+
+Ahora para ver las salidas debe hacer esto, hacer click en passed. Luego hacer click en Test y Deploy para ver el detalle
+
+
+.. figure:: https://github.com/cgomeznt/Gitlab/blob/master/images/Docker/07.png
+
+
+
+.. figure:: https://github.com/cgomeznt/Gitlab/blob/master/images/Docker/10.png
+
+
+Este es el detalle de Test
+
+.. figure:: https://github.com/cgomeznt/Gitlab/blob/master/images/Docker/08.png
+
+
+.. figure:: https://github.com/cgomeznt/Gitlab/blob/master/images/Docker/09.png
+
+
 

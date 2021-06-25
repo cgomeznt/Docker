@@ -148,7 +148,7 @@ https://stackoverflow.com/questions/56663096/gitlab-runner-doesnt-work-on-a-spec
 
 .. figure:: https://github.com/cgomeznt/Gitlab/blob/master/images/Docker/02.png
 
-Ya con esos datos podemos continuar dentro del contenedor::
+Ya con esos datos podemos continuar dentro del contenedor y hacer un registro de gitlab-runner del tipo shell ::
 
 	gitlab-runner register
 
@@ -159,7 +159,7 @@ Ya con esos datos podemos continuar dentro del contenedor::
 		Enter a description for the runner:
 		[294d980743df]: Runner para ejecutar un Shell
 		Enter tags for the runner (comma-separated):
-		shell-01
+		shell-demo
 		Registering runner... succeeded                     runner=diwM-bTp
 		Enter an executor: docker, docker+machine, kubernetes, docker-ssh+machine, custom, docker-ssh, parallels, shell, ssh, virtualbox:
 		shell
@@ -171,7 +171,7 @@ Ya podremos ver en el servidor de Gitlab nuestro registro del Gitlab-runner
 .. figure:: https://github.com/cgomeznt/Gitlab/blob/master/images/CICD/12.png
 
 
-Revisar que el runner del proyecto, el servicio de gitlab-runner debe estar iniciado y debe ser capaz de resolver por DNS y IP al servidor gitlab. En el proyecto que este asociado y conectado el runner, en el menú Settting > CI/CD del proyecto y Runners
+Revisar el runner del proyecto, el servicio de gitlab-runner debe estar iniciado y debe ser capaz de resolver por DNS y IP al servidor gitlab. En el proyecto que este asociado y conectado el runner, en el menú Settting > CI/CD del proyecto y Runners
 
 .. figure:: https://github.com/cgomeznt/Gitlab/blob/master/images/CICD/13.png
 

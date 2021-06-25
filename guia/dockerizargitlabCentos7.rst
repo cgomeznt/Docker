@@ -3,19 +3,20 @@ Dokerizar Gitlab Gitlab-Runner Centos 7
 
 Vamos a Dokerizar Gitlab, Gitlab-Runner paso a paso en este docker.
 
-Recordemos deshabilitar el selinux y firewall, importante tener una buena configuración de DNS o en el archivo HOSTS, nuestro dominio se llamara **dominio.local** y tambien vamos a crear una Netword de docker llamada **app* para que los contenedores puedan resolver por nombre DNS
+Recordemos deshabilitar el selinux y firewall, importante tener una buena configuración de DNS o en el archivo HOSTS, nuestro dominio se llamara **dominio.local** y tambien vamos a crear una Netword de docker llamada **app** para que los contenedores puedan resolver por nombre DNS
 
 **Descargamos una imagen de Centos 7**::
 
 	docker search centos
 
-	docker pull centos
+	docker pull centos:7
 
 	docker images 
 
 **Crear un directorio de trabajo**::
 
-	$ mkdir laboratorio
+	mkdir laboratorio
+	cd laboratorio
 
 **Creamos un Network en docker**::
 
@@ -39,13 +40,13 @@ Recordemos deshabilitar el selinux y firewall, importante tener una buena config
 	--volume $GITLAB_HOME/logs:/var/log/gitlab \
 	--volume $GITLAB_HOME/data:/var/opt/gitlab --privileged centos:7 /usr/sbin/init
 
-**Descargar el gitlab gitlab-runner**
+**Descargar el gitlab y gitlab-runner**
 
 https://about.gitlab.com/install/
 
 https://docs.gitlab.com/runner/install/linux-manually.html
 
-**Copiamos el instalador gitlab gitlab-runner**::
+**Copiamos el instalador gitlab y gitlab-runner** dentro del contenedor ::
 
 	docker cp gitlab-ce-13.10.0-ce.0.el7.x86_64.rpm gitlab/tmp
 	docker cp gitlab-runner_amd64.rpm gitlab/tmp
@@ -66,7 +67,7 @@ https://docs.gitlab.com/runner/install/linux-manually.html
 
 	sed -i "s/\# unicorn\['worker_timeout'\] = 60/unicorn\['worker_timeout'\] = 300/g" /etc/gitlab/gitlab.rb
 
-**Editamos la URL**::
+**Editamos la URL** y la colocamos con nuestro dominio::
 
 	vi /etc/gitlab/gitlab.rb
 	...
@@ -74,14 +75,24 @@ https://docs.gitlab.com/runner/install/linux-manually.html
 	external_url 'http://gitlab.dominio.local'
 	...
 
-**Iniciamos el servicio de gitlab** Esto lo debes ejecutar cada vez que inicies el contenedor, **NOTA**  en este link oficial explica porque esta configuración, si no la aplicamos el Gitlab se quedara en la reconfiguración pegado en esta sesión *** ruby_block[wait for redis service socket] action run**
+**Iniciamos el servicio de gitlab** Esto lo debes ejecutar cada vez que inicies el contenedor, **NOTA**  en este link oficial explica porque esta configuración, si no la aplicamos el Gitlab se quedara en la reconfiguración, es decir, pegado en esta sesión ** ruby_block[wait for redis service socket] action run**
 
 https://gitlab.com/gitlab-org/omnibus-gitlab/-/issues/4257 ::
 
 
-(/opt/gitlab/embedded/bin/runsvdir-start &) && gitlab-ctl reconfigure
+	(/opt/gitlab/embedded/bin/runsvdir-start &) && gitlab-ctl reconfigure
 
-Listo, con esto ya podemos cargar la pagina de gitlab y cambiar la clave de root
+Nos salimos del contenedor y consultamos que IP tiene::
+
+	docker container inspect gitlab | grep IPAddress
+
+La IP que nos arroje se la cargamos a Nuestro HOST en donde esta corriendo el contenedor::
+
+	echo "172.18.0.3	gitlab.dominio.local" >> /etc/hosts
+
+Listo, con esto ya podemos cargar la pagina de gitlab y cambiar la clave de root, http://gitlab.dominio.local
+
+.. figure:: ../images/01.png
 
 http://gitlab.dominio.local
 

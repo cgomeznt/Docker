@@ -86,13 +86,13 @@ Nos salimos del contenedor y consultamos que IP tiene::
 
 	docker container inspect gitlab | grep IPAddress
 
-La IP que nos arroje se la cargamos a Nuestro HOST en donde esta corriendo el contenedor::
+La IP que nos arroje se la cargamos a nuestro archivo HOST en donde esta corriendo el contenedor::
 
 	echo "172.18.0.3	gitlab.dominio.local" >> /etc/hosts
 
 Listo, con esto ya podemos cargar la pagina de gitlab y cambiar la clave de root, http://gitlab.dominio.local
 
-.. figure:: ../images/01.png
+.. figure:: https://github.com/cgomeznt/Gitlab/blob/master/images/01.png
 
 http://gitlab.dominio.local
 

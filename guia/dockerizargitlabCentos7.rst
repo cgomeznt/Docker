@@ -3,7 +3,7 @@ Dokerizar Gitlab Gitlab-Runner Centos 7
 
 Vamos a Dokerizar Gitlab, Gitlab-Runner paso a paso en este docker.
 
-Recordemos deshabilitar el selinux y firewall, importante tener una buena configuración de DNS o en el archivo HOSTS
+Recordemos deshabilitar el selinux y firewall, importante tener una buena configuración de DNS o en el archivo HOSTS, nuestro dominio se llamara **dominio.local** y tambien vamos a crear una Netword de docker llamada **app* para que los contenedores puedan resolver por nombre DNS
 
 **Descargamos una imagen de Centos 7**::
 

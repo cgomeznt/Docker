@@ -92,9 +92,10 @@ La IP que nos arroje se la cargamos a nuestro archivo HOST en donde esta corrien
 
 Listo, con esto ya podemos cargar la pagina de gitlab y cambiar la clave de root, http://gitlab.dominio.local
 
+http://gitlab.dominio.local
+
 .. figure:: https://github.com/cgomeznt/Gitlab/blob/master/images/01.png
 
-http://gitlab.dominio.local
 
 **Instalamos Docker**
 
@@ -105,6 +106,8 @@ https://docs.docker.com/engine/install/centos/ ::
 	yum-config-manager \
 	    --add-repo \
 	    https://download.docker.com/linux/centos/docker-ce.repo
+
+	yum install docker-ce docker-ce-cli containerd.io
 
 **Iniciamos docker**::
 

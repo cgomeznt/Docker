@@ -59,7 +59,7 @@ Generate the certificate using the registry csr and key along with the CA Root k
 
 	openssl x509 -req -in registry.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -out registry.crt -days 500 -sha256
 
-Verify the certificate's content
+Verify the certificate's content::
 
 	openssl x509 -in registry.crt -text -noout
 

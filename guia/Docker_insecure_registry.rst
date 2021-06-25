@@ -28,7 +28,7 @@ https://docs.docker.com/config/daemon/ ::
 	# remove -H
 	ExecStart=/usr/bin/dockerd --containerd=/run/containerd/containerd.sock
 
-**Recargamos y reiniciamos docker**
+**Recargamos y reiniciamos docker**::
 
 	systemctl daemon-reload                                          
 	systemctl start docker

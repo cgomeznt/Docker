@@ -114,7 +114,7 @@ https://docs.gitlab.com/runner/install/linux-manually.html ::
 	newgrp docker
 	id gitlab-runner
 
-*Instalamos una versión superior de git** porque el git 1.8.3.1 No soporta git fetch-pack
+**Instalamos una versión superior de git** porque el git 1.8.3.1 No soporta git fetch-pack
 
 https://stackoverflow.com/questions/56663096/gitlab-runner-doesnt-work-on-a-specific-project ::
 
@@ -126,37 +126,13 @@ https://stackoverflow.com/questions/56663096/gitlab-runner-doesnt-work-on-a-spec
 	git --version
 
 
-**Registramos un runner dentro del gitlab**
+**Registramos un runner dentro del gitlab**::
 
 	gitlab-runner register
 
 
 
-image: registry:5000/nodejs
-stages:
-  - test
-  - deploy
 
-Test:
-  stage: test
-  tags:
-  - shell-01
-  script:
-    - echo "write your test here...!!!"
-    - echo "$CI_COMMIT_SHORT_SHA - $REPO_DEV - $CI_COMMIT_SHORT_SHA"
-    - docker build -t $CI_COMMIT_SHORT_SHA .
-    - docker image tag $CI_COMMIT_SHORT_SHA $REPO_DEV$CI_COMMIT_SHORT_SHA
-    - docker push $REPO_DEV$CI_COMMIT_SHORT_SHA
-
-Deploy:
-  only:
-    refs:
-      - master
-  stage: deploy
-  tags:
-    - shell-01
-  script:
-    - touch /tmp/prueba.txt
 
 
 

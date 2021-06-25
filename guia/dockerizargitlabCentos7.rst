@@ -148,7 +148,7 @@ https://stackoverflow.com/questions/56663096/gitlab-runner-doesnt-work-on-a-spec
 
 .. figure:: https://github.com/cgomeznt/Gitlab/blob/master/images/Docker/02.png
 
-::
+Ya con esos datos podemos continuar dentro del contenedor::
 
 	gitlab-runner register
 
@@ -166,10 +166,14 @@ https://stackoverflow.com/questions/56663096/gitlab-runner-doesnt-work-on-a-spec
 		Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded! 
 
 
+Ya podremos ver en el servidor de Gitlab nuestro registro del Gitlab-runner
+
+.. figure:: https://github.com/cgomeznt/Gitlab/blob/master/images/CICD/12.png
 
 
+Revisar que el runner del proyecto, el servicio de gitlab-runner debe estar iniciado y debe ser capaz de resolver por DNS y IP al servidor gitlab. En el proyecto que este asociado y conectado el runner, en el menú Settting > CI/CD del proyecto y Runners
 
-
+.. figure:: https://github.com/cgomeznt/Gitlab/blob/master/images/CICD/13.png
 
 
 

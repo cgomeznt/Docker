@@ -21,10 +21,14 @@ Recordemos deshabilitar el selinux y firewall, importante tener una buena config
 **Creamos un Network en docker**::
 
 	docker network create app
+	docker network ls
+	docker network inspect app
 
 **Creamos la variable para un volumen permanente**::
 
 	export GITLAB_HOME="/home/cgomeznt/srv/gitlab"
+	echo $GITLAB_HOME
+	rm -rf  $GITLAB_HOME/*
 
 **Instanciamos el contenedor**::
 
@@ -33,12 +37,17 @@ Recordemos deshabilitar el selinux y firewall, importante tener una buena config
 	--publish 443:443 \
 	--publish 80:80 \
 	--publish 22:22 \
-	--name gitlab \
+	--name gitlab.dominio.local \
 	--restart=on-failure \
 	--network app \
 	--volume $GITLAB_HOME/config:/etc/gitlab \
 	--volume $GITLAB_HOME/logs:/var/log/gitlab \
 	--volume $GITLAB_HOME/data:/var/opt/gitlab --privileged centos:7 /usr/sbin/init
+
+**Consultamos el contenedor**::
+
+	docker ps
+	docker container inspect gitlab.dominio.local
 
 **Descargar el gitlab y gitlab-runner**
 
@@ -53,10 +62,11 @@ https://docs.gitlab.com/runner/install/linux-manually.html
 
 **Ingresamos en le contenedor**::
 
-	docker exec -ti gitlab bash
+	docker exec -ti gitlab.dominio.local bash
 
 **Instalamos los pre-requisitos**::
-
+	
+	yum update
 	yum install -y xterm curl openssh-server ca-certificates postfix policycoreutils-python vim net-tools git
 
 **Instalamos gitlab**::
@@ -69,30 +79,33 @@ https://docs.gitlab.com/runner/install/linux-manually.html
 
 **Editamos la URL** y la colocamos con nuestro dominio::
 
-	vi /etc/gitlab/gitlab.rb
-	...
-	# external_url 'http://gitlab.example.com'
-	external_url 'http://gitlab.dominio.local'
-	...
+	sed -i 's/gitlab.example.com/gitlab.dominio.local/g' /etc/gitlab/gitlab.rb
 
-**Iniciamos el servicio de gitlab** Esto lo debes ejecutar cada vez que inicies el contenedor, **NOTA**  en este link oficial explica porque esta configuración, si no la aplicamos el Gitlab se quedara en la reconfiguración, es decir, pegado en esta sesión ** ruby_block[wait for redis service socket] action run**
+**Iniciamos el servicio de gitlab** Esto lo debes ejecutar cada vez que inicies el contenedor, **NOTA**  en este link oficial::
 
-https://gitlab.com/gitlab-org/omnibus-gitlab/-/issues/4257 ::
+https://gitlab.com/gitlab-org/omnibus-gitlab/-/issues/4257
 
+explica porque esta configuración, si no la aplicamos el Gitlab se quedara en la reconfiguración, es decir, pegado en esta sesión ** ruby_block[wait for redis service socket] action run**, entonces ejecutemos el siguiente comando dentro del contenedor::
 
 	(/opt/gitlab/embedded/bin/runsvdir-start &) && gitlab-ctl reconfigure
 
+Veremos unos errores de sysctl referentes a valores del kernel, pero podemos continuar. (Luego corregiremos este BUG)
+
 Nos salimos del contenedor y consultamos que IP tiene::
 
-	docker container inspect gitlab | grep IPAddress
+	docker container inspect gitlab.dominio.local | grep IPAddress
 
 La IP que nos arroje se la cargamos a nuestro archivo HOST en donde esta corriendo el contenedor::
 
-	echo "172.18.0.3	gitlab.dominio.local" >> /etc/hosts
+	echo "172.18.0.2	gitlab.dominio.local" >> /etc/hosts
 
-Tambien podemos utilizar la IP del HOST::
+También podemos utilizar la IP del HOST::
 
-	echo "1192.168.1.5	gitlab.dominio.local" >> /etc/hosts
+	echo "192.168.1.5	gitlab.dominio.local" >> /etc/hosts
+
+Probemos desde el HOST el ping 
+
+	ping -c2 gitlab.dominio.local
 
 Listo, con esto ya podemos cargar la pagina de gitlab y cambiar la clave de root, http://gitlab.dominio.local
 
@@ -103,9 +116,9 @@ http://gitlab.dominio.local
 
 **Instalamos Docker**
 
-**Ingresamos en le contenedor**::
+**Ingresamos en le contenedor** para instalar el Docker::
 
-	docker exec -ti gitlab bash
+	docker exec -ti gitlab.dominio.local bash
 
 https://docs.docker.com/engine/install/centos/ ::
 
@@ -115,13 +128,14 @@ https://docs.docker.com/engine/install/centos/ ::
 	    --add-repo \
 	    https://download.docker.com/linux/centos/docker-ce.repo
 
-	yum install docker-ce docker-ce-cli containerd.io
+	yum install -y docker-ce docker-ce-cli containerd.io
 
 **Iniciamos docker**::
 
 	systemctl enable docker
 	systemctl start docker
 	systemctl status docker
+	docker run hello-world
 
 
 **Instalar gitlab-runner**
@@ -129,12 +143,24 @@ https://docs.docker.com/engine/install/centos/ ::
 https://docs.gitlab.com/runner/install/linux-manually.html ::
 
 	rpm -ivh /tmp/gitlab-runner_amd64.rpm
+	systemctl status gitlab-runner
+	gitlab-runner --version
+		Version:      14.0.1
+		Git revision: c1edb478
+		Git branch:   refs/pipelines/326100216
+		GO version:   go1.13.8
+		Built:        2021-06-23T16:35:23+0000
+		OS/Arch:      linux/amd64
+
 
 **El usuario gitlab-runner debe estar en el grupo Docker**::
 
 	usermod -aG docker gitlab-runner
 	newgrp docker
 	id gitlab-runner
+
+	su - gitlab-runner
+	$ docker info
 
 **Instalamos una versión superior de git** porque el git 1.8.3.1 No soporta git fetch-pack
 
@@ -144,50 +170,58 @@ https://stackoverflow.com/questions/56663096/gitlab-runner-doesnt-work-on-a-spec
 	git version 1.8.3.1 # No soporta git fetch-pack
 
 	yum -y install https://packages.endpoint.com/rhel/7/os/x86_64/endpoint-repo-1.7-1.x86_64.rpm
-	yum install git
+	yum -y install git
 	git --version
+	git version 2.30.1
 
 
-**Registramos un runner dentro del gitlab** debemos tener primero el token de gitlab, ingresemos a gitlab.dominio.local
+**Registramos un runner dentro del gitlab** debemos tener primero el token de gitlab, ingresemos a gitlab.dominio.local, y buscamos Admin area -> Overview -> Runner
 
 .. figure:: https://github.com/cgomeznt/Gitlab/blob/master/images/Docker/02.png
 
-Ya con esos datos podemos continuar dentro del contenedor y hacer un registro de gitlab-runner del tipo shell ::
+Vamos a continuar dentro del contenedor y hacer un registro de gitlab-runner del tipo shell ::
 
 	gitlab-runner register
 
 		Enter the GitLab instance URL (for example, https://gitlab.com/):
-		http://gitlab
+		http://gitlab.dominio.local
 		Enter the registration token:
-		diwM-bTpiJxqndAtjacd
+		uPKaQBaMJy2hN5Po25Fg
 		Enter a description for the runner:
-		[294d980743df]: Runner para ejecutar un Shell
+		[gitlab.dominio.local]: Runner para ejecutar shell
 		Enter tags for the runner (comma-separated):
 		shell-demo
-		Registering runner... succeeded                     runner=diwM-bTp
-		Enter an executor: docker, docker+machine, kubernetes, docker-ssh+machine, custom, docker-ssh, parallels, shell, ssh, virtualbox:
+		Registering runner... succeeded                     runner=uPKaQBaM
+		Enter an executor: shell, virtualbox, kubernetes, ssh, docker+machine, docker-ssh+machine, custom, docker, docker-ssh, parallels:
 		shell
 		Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded! 
 
 
-Ya podremos ver en el servidor de Gitlab nuestro registro del Gitlab-runner
+Veamos en el servidor de Gitlab nuestro registro del Gitlab-runner
 
 .. figure:: https://github.com/cgomeznt/Gitlab/blob/master/images/CICD/12.png
 
 
-Revisar el runner del proyecto, el servicio de gitlab-runner debe estar iniciado y debe ser capaz de resolver por DNS y IP al servidor gitlab. En el proyecto que este asociado y conectado el runner, en el menú Settting > CI/CD del proyecto y Runners
+Ahora vamos a revisar el runner que se asocia dentro de un proyecto de Gitlab, no deje de certificar que el servicio de gitlab-runner este iniciado y en donde este instalado el gitlab-runner debe ser capaz de resolver por DNS y IP al servidor gitlab.dominio.local. busca un proyecto y en el menú Settting -> CI/CD del proyecto -> Runners.
 
 .. figure:: https://github.com/cgomeznt/Gitlab/blob/master/images/CICD/13.png
 
 
-**Probando el gitlab-runner**, creamos un .gitlab-ci.yml. configuración del archivo .gitlab-ci.yml
-Vas a configurar la pipeline GitLab CI/CD.
+**Probando el gitlab-runner**, creamos un .gitlab-ci.yml. Dentro del .gitlab-ci.yml se configuran los pipeline GitLab CI/CD.
 
-Ahora va a crear el archivo .gitlab-ci.yml que contiene la configuración de la pipeline. En GitLab, vaya a la página de descripción general del proyecto, haga clic en el botón + y seleccione New File. Luego, establezca el nombre del archivo en .gitlab-ci.yml.
+Crear un proyecto nuevo, yo lo llamare **my-app** y lo clonamos en nuestro directorio de trabajo::
 
-(Alternativamente, puede clonar el repositorio y realizar todos los cambios siguientes en .gitlab-ci.yml en su máquina local, luego confirmar y enviar al repositorio remoto).
+	git clone http://gitlab.dominio.local/root/my-app.git
+		Clonando en 'my-app'...
+		warning: Pareces haber clonado un repositorio sin contenido.
 
-El archivo tendrá el siguiente contenido:::
+Nos pasamos al repositorio clonado::
+
+	cd my-app 
+
+Crear el archivo .gitlab-ci.yml. El archivo tendrá el siguiente contenido:::
+
+	vi .gitlab-ci.yml
 
 	stages:
 	  - test
@@ -196,7 +230,7 @@ El archivo tendrá el siguiente contenido:::
 	Test:
 	  stage: test
 	  tags:
-	  - shell-01
+	  - shell-demo
 	  script:
 	    - echo "write your test here...!!!"
 	 
@@ -206,11 +240,17 @@ El archivo tendrá el siguiente contenido:::
 	      - master
 	  stage: deploy
 	  tags:
-	    - shell-01
+	    - shell-demo
 	  script:
 	    - touch /tmp/prueba.txt
 
-Cuando realice cualquier commit se vera algo como esto, estara en pending o running mientras ejecuta todo.
+**NOTA** pendiente con el la linea del tags: ese nombre debe ser igual al nombre que le dieron al runner, es decir, desde aquí estamos invocando a un runner y debe coincidir los nombres
+
+Agregamos los cambios, hacemos el commit y subimos los cambios a nuestro proyecto::
+
+	git add .gitlab-ci.yml && git commit -m "My First Commit" && git push origin master
+
+Cuando realice cualquier push  se vera algo como esto, estará en pending o running mientras ejecuta todo.
 
 
 .. figure:: https://github.com/cgomeznt/Gitlab/blob/master/images/Docker/05.png
@@ -238,6 +278,11 @@ Este es el detalle de Test
 
 
 .. figure:: https://github.com/cgomeznt/Gitlab/blob/master/images/Docker/09.png
+
+Listo ya con esto tenemos Dockerizado Gitlab y Gitlab-Runner en un mismo contenedor, recuerda que cada vez que inicies el contenedor debes ejecutar este comando::
+
+	(/opt/gitlab/embedded/bin/runsvdir-start &) && gitlab-ctl reconfigure
+
 
 
 

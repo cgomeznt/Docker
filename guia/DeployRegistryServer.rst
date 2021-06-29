@@ -27,44 +27,17 @@ Remove the locally-cached ubuntu:16.04 and localhost:5000/my-ubuntu images, so t
 Run an externally-accessible registry
 +++++++++++++++++++++++++++++++++++++
 
-Running a registry only accessible on localhost has limited usefulness. In order to make your registry accessible to external hosts, you must first secure it using TLS.
+Correr el registry  de forma insegura es solo accesible desde localhost. Para poder crear un registry accesible desde host externos, debemos configurar primero los TLS.
 
-This example is extended in Run the registry as a service below.
-
-Debemos crear los certificados primero con **openssl** creamos el un directorio de trabajo::
+Debemos crear los certificados primero con **openssl**, creamos un directorio de trabajo::
 
 	mkdir certs
 	cd certs
 
-https://gist.github.com/fntlnz/cf14feb5a46b2eda428e000157447309
+Ahora sigue este procedimiento de crear un certificado auto firmado. Este procedimiento lo debemos crear en el Host.
 
-Create Root Key::
+https://github.com/cgomeznt/openssl/blob/master/guia/Autofirmado.rst
 
-	openssl genrsa -des3 -out rootCA.key 4096
-
-Create and self sign the Root Certificate::
-
-	openssl req -x509 -new -nodes -key rootCA.key -sha256 -days 1024 -out rootCA.crt
-
-Create a certificate (Done for each server) - Create the certificate key::
-
-	openssl genrsa -out registry.key 2048
-
-Create the signing (csr) ::
-
-	openssl req -new -key registry.key -out registry.csr
-
-Verify the csr's content::
-
-	openssl req -in registry.csr -noout -text
-
-Generate the certificate using the registry csr and key along with the CA Root key::
-
-	openssl x509 -req -in registry.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -out registry.crt -days 500 -sha256
-
-Verify the certificate's content::
-
-	openssl x509 -in registry.crt -text -noout
 
 Luego que tengamos los certificados los debemos crear una carpeta en los servidores que vayan a utilizar el Docker Registry::
 

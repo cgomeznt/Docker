@@ -103,7 +103,7 @@ También podemos utilizar la IP del HOST::
 
 	echo "192.168.1.5	gitlab.dominio.local" >> /etc/hosts
 
-Probemos desde el HOST el ping 
+Probemos desde el HOST el ping ::
 
 	ping -c2 gitlab.dominio.local
 

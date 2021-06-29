@@ -43,40 +43,58 @@ Luego que tengamos los certificados los debemos crear una carpeta en los servido
 
 	mkdir -p /etc/docker/certs.d/NOMBRE_DEL_CONTENEDOR\:PUERTO/
 
-	mkdir -p /etc/docker/certs.d/registry\:5000/
+	mkdir -p /etc/docker/certs.d/registry.dominio.local\:4443/
 
 Y dentro de esa carpeta debemos copiar el certificado del servidor y la CA que lo firmo::
 
 	cp registry.crt rootCA.crt /etc/docker/certs.d/NOMBRE_DEL_CONTENEDOR\:PUERTO/
 
-	cp registry.crt rootCA.crt /etc/docker/certs.d/registry\:5000/
+	cp registry.crt rootCA.crt /etc/docker/certs.d/registry.dominio.local\:4443/
 
+**NOTA** Si omites los pasos anteriores te encontraras con este error <Get https://registry.dominio.local:4443/v2/: x509: certificate signed by unknown authority
+>
 Se instancia el contenedor de Registry, debemos estar un peldaño sobre la carpeta certs, donde están los certificados::
 
 	docker run -d \
 	  --restart=always \
-	  --name registry \
+	  --name registry.dominio.local \
 	  -v "$(pwd)"/certs:/certs \
-	  -e REGISTRY_HTTP_ADDR=0.0.0.0:5000 \
+	  -e REGISTRY_HTTP_ADDR=0.0.0.0:4443 \
 	  -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/registry.crt \
 	  -e REGISTRY_HTTP_TLS_KEY=/certs/registry.key \
-	  -p 5000:500 \
+	  -p 4443:4443 \
 	  --network app \
 	  registry:2
 
+Consultamos que IP tiene::
+
+	docker container inspect registry.dominio.local | grep IPAddress
+
+La IP que nos arroje se la cargamos a nuestro archivo HOST en donde esta corriendo el contenedor::
+
+	echo "172.18.0.3	registry.dominio.local" >> /etc/hosts
+
+Probamos desde el HOST el ping::
+
+	ping -c2 registry.dominio.local
+
 Vemos que imágenes tiene el Registry::
 
-	curl -k https://registry:5000/v2/_catalog
+	curl -k https://registry.dominio.local:4443/v2/_catalog
 
 
 descargamos una imagen de prueba::
 
 	docker pull alpine
 
-	docker tag alpine:latest registry:5000/alpine
+	docker tag alpine:latest registry.dominio.local:4443/alpine
 
-	docker push registry:5000/alpine
+	docker images
+
+	docker push registry.dominio.local:4443/alpine
 
 Volvemos a verificar que imágenes tiene el Registry::
 
-	curl -k https://registry:5000/v2/_catalog
+	curl -k https://registry.dominio.local:4443/v2/_catalog
+
+Listo ...!!!

@@ -24,7 +24,7 @@ Remove the locally-cached ubuntu:16.04 and localhost:5000/my-ubuntu images, so t
 	$ docker image remove ubuntu:16.04
 	$ docker image remove localhost:5000/my-ubuntu
 
-Run an externally-accessible registry
+Correr un Registry accesible desde otros servidores
 +++++++++++++++++++++++++++++++++++++
 
 Correr el registry  de forma insegura es solo accesible desde localhost. Para poder crear un registry accesible desde host externos, debemos configurar primero los TLS.
@@ -34,7 +34,7 @@ Debemos crear los certificados primero con **openssl**, creamos un directorio de
 	mkdir certs
 	cd certs
 
-Ahora sigue este procedimiento de crear un certificado auto firmado. Este procedimiento lo debemos crear en el Host.
+Ahora sigue este procedimiento de crear un certificado auto firmado. Este procedimiento lo debemos crear en el Host. Poner atención cuando le consulten <Common Name (e.g. server FQDN or YOUR name)> aquí se debe especificar el nombre correcto del servidor a nivel de DNS o el nombre que se utilizara en los archivos HOSTS. En este ejemplo debe ser registry.dominio.local
 
 https://github.com/cgomeznt/openssl/blob/master/guia/Autofirmado.rst
 

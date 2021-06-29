@@ -34,7 +34,7 @@ Debemos crear los certificados primero con **openssl**, creamos un directorio de
 	mkdir certs
 	cd certs
 
-Ahora sigue este procedimiento de crear un certificado auto firmado. Este procedimiento lo debemos crear en el Host. Poner atención cuando le consulten <Common Name (e.g. server FQDN or YOUR name)> aquí se debe especificar el nombre correcto del servidor a nivel de DNS o el nombre que se utilizara en los archivos HOSTS. En este ejemplo debe ser registry.dominio.local
+Ahora sigue este procedimiento de crear un certificado auto firmado. Este procedimiento lo debemos crear en el Host. Poner atención cuando en la creación del Request (crs) consulten <Common Name (e.g. server FQDN or YOUR name)> aquí se debe especificar el nombre correcto del servidor a nivel de DNS o el nombre que se utilizara en los archivos HOSTS. En este ejemplo debe ser registry.dominio.local
 
 https://github.com/cgomeznt/openssl/blob/master/guia/Autofirmado.rst
 
